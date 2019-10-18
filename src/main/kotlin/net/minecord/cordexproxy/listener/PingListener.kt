@@ -15,11 +15,9 @@ import net.minecord.cordexproxy.util.colored
 import javax.imageio.ImageIO
 import java.io.File
 import java.io.IOException
-import java.util.Random
+import kotlin.random.Random
 
 class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
-    private val random = Random()
-
     @EventHandler
     fun onProxyPing(event: ProxyPingEvent) {
         val ipAddress = event.connection.address.address.hostAddress
@@ -47,7 +45,7 @@ class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                 else
                     cordexProxy.chatController.getMotds(languageType, MotdType.FAKAHEDA)
 
-                val motdStorage = motds!![random.nextInt(motds.size)]
+                val motdStorage = motds!![Random.nextInt(motds.size)]
 
                 firstLine = motdStorage.firstPayload.replace("%country%", ipData.country.toLowerCase()).replace("%language%", ipData.language.toString().toLowerCase()).replace("%network%", networkName).colored()
                 secondLine = motdStorage.secondPayload.replace("%country%", ipData.country.toLowerCase()).replace("%language%", ipData.language.toString().toLowerCase()).replace("%network%", networkName).colored()
@@ -81,8 +79,8 @@ class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             firstLine = cordexProxy.translationController.getTranslation(languageType, "banMotdFirstLine").replace("%expire%", banData.expire.toString()).replace("%reason%", banData.reason).replace("%network%", networkName).colored().centerMotdMessage()
             secondLine = cordexProxy.translationController.getTranslation(languageType, "banMotdSecondLine").replace("%expire%", banData.expire.toString()).replace("%reason%", banData.reason).replace("%network%", networkName).colored().centerMotdMessage()
 
-            event.response.players.max = random.nextInt(1000)
-            event.response.players.online = random.nextInt(1000)
+            event.response.players.max = Random.nextInt(1000)
+            event.response.players.online = Random.nextInt(1000)
 
             try {
                 event.response.setFavicon(Favicon.create(ImageIO.read(File("ban-icon.png"))))

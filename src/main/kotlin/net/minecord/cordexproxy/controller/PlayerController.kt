@@ -17,10 +17,11 @@ import java.sql.Timestamp
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
+import kotlin.collections.HashMap
 import kotlin.math.roundToInt
+import kotlin.random.Random
 
 class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
-    private val random = Random()
     private val players = HashMap<UUID, CordPlayer>()
 
     init {
@@ -53,7 +54,7 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
 
     fun showTablist(cordPlayer: CordPlayer) {
         val motds = cordexProxy.chatController.getMotds(cordPlayer.language, MotdType.TABLIST)
-        val motd = motds!![random.nextInt(motds.size)]
+        val motd = motds!![Random.nextInt(motds.size)]
 
         val proxyServer = cordPlayer.player.server
         if (proxyServer == null || proxyServer.info == null || proxyServer.info.name == null)

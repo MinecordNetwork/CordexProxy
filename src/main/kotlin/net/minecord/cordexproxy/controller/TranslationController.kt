@@ -3,13 +3,9 @@ package net.minecord.cordexproxy.controller
 import net.minecord.cordexproxy.CordexProxy
 import net.minecord.cordexproxy.model.controller.log.LogType
 import net.minecord.cordexproxy.model.controller.translation.LanguageType
-import net.minecord.cordexproxy.model.controller.translation.TranslationStorage
-import net.minecord.cordexproxy.util.colored
-
-import java.util.*
+import kotlin.random.Random
 
 class TranslationController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
-    private val random = Random()
     private var translations: HashMap<LanguageType, HashMap<String, ArrayList<String>>>? = null
 
     init {
@@ -111,7 +107,7 @@ class TranslationController(cordexProxy: CordexProxy) : BaseController(cordexPro
                 size--
             }
 
-            var message = messages[random.nextInt(messages.size)]
+            var message = messages[Random.nextInt(messages.size)]
 
             for ((key, value) in placeholders)
                 message = message.replace(key, value)
