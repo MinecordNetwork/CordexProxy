@@ -16,7 +16,7 @@ class ProxyCommand(cordexProxy: CordexProxy, name: String, permission: String, v
                 return
             val admin = cordexProxy.playerController.getPlayer(commandSender)
             for (message in result)
-                admin!!.sendMessage(message.replace("%prefix%", cordexProxy.chatController.getPrefix("cordex")))
+                admin.sendMessage(message.replace("%prefix%", cordexProxy.chatController.getPrefix("cordex")))
         } else if (commandSender is ConsoleCommandSender) {
             for (message in result)
                 cordexProxy.logController.write(message.replace("%prefix%", cordexProxy.chatController.getPrefix("cordex")))
