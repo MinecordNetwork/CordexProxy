@@ -8,7 +8,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer
 import org.bukkit.command.TabCompleter
 
 class BanCommand(cordexProxy: CordexProxy, name: String, permission: String, vararg aliases: String) : BaseCommand(cordexProxy, name, permission, *aliases) {
-    override fun execute(commandSender: CommandSender, strings: Array<String>) {
+    override fun execute(commandSender: CommandSender, args: Array<String>) {
         val helpMessage = "%prefix% Example ban (7 days): &e/ipban Nick Cheating 7d &7more at &b/cordex ban"
         var admin: CordPlayer? = null
 
@@ -18,24 +18,24 @@ class BanCommand(cordexProxy: CordexProxy, name: String, permission: String, var
             admin = cordexProxy.playerController.getPlayer(commandSender)
         }
 
-        if (strings.size < 3) {
+        if (args.size < 3) {
             admin?.sendMessage("banlist", helpMessage)
             return
         }
 
-        val target = cordexProxy.cacheController.getPlayerData(strings[0])
+        val target = cordexProxy.cacheController.getPlayerData(args[0])
         if (target == null) {
             admin?.sendMessage("banlist", "%prefix% Player not found, manual is at &b/cordex ban")
             return
         }
 
         var reason = StringBuilder()
-        for (i in 1 until strings.size - 1)
-            reason.append(strings[i]).append(" ")
+        for (i in 1 until args.size - 1)
+            reason.append(args[i]).append(" ")
 
         reason = StringBuilder(reason.substring(0, reason.length - 1))
 
-        val howLong = strings[strings.size - 1]
+        val howLong = args[args.size - 1]
 
         var duration = Integer.parseInt(howLong.substring(0, howLong.length - 1))
 

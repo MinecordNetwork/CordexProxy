@@ -212,8 +212,7 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
                     val rank = rs.getString("primary_group")
                     playerData = PlayerStorage(rs.getInt("id"), rs.getString("name"), UUID.fromString(rs.getString("uuid")), rs.getBoolean("is_online"), rs.getBoolean("is_logged"), rs.getString("type"), rs.getBoolean("is_whitelisted"),
                             rs.getInt("first_ip_address_id"), rs.getString("first_ip_address"), rs.getInt("last_ip_address_id"), rs.getString("last_ip_address"), rs.getInt("played_time"), rs.getTimestamp("first_join"), rs.getTimestamp("first_login"),
-                            rs.getTimestamp("last_join"), rs.getTimestamp("last_login"), cordexProxy.rankController.getRank(rank
-                            ?: "default"))
+                            rs.getTimestamp("last_join"), rs.getTimestamp("last_login"), cordexProxy.rankController.getRank(rank))
                 }
                 rs.close()
             } catch (e: SQLException) {

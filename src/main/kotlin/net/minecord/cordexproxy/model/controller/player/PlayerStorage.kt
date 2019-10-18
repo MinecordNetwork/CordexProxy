@@ -3,7 +3,7 @@ package net.minecord.cordexproxy.model.controller.player
 import java.sql.Timestamp
 import java.util.UUID
 
-class PlayerStorage(val id: Int, var name: String, var uuid: UUID, var isOnline: Boolean, var isLogged: Boolean, var type: String, var isWhitelisted: Boolean, val firstIp: Int, var firstIpAddress: String?, val lastIp: Int, var lastIpAddress: String, playedTime: Int, var firstJoin: Timestamp?, var firstLogin: Timestamp?, var lastJoin: Timestamp?, var lastLogin: Timestamp?, var rank: RankStorage?) {
+class PlayerStorage(val id: Int, val name: String, val uuid: UUID, val isOnline: Boolean, var isLogged: Boolean, val type: String, val isWhitelisted: Boolean, val firstIp: Int, val firstIpAddress: String, val lastIp: Int, var lastIpAddress: String, playedTime: Int, var firstJoin: Timestamp?, var firstLogin: Timestamp?, var lastJoin: Timestamp?, var lastLogin: Timestamp?, val rank: RankStorage) {
     var playedTime: Int = 0
         get() = if (isOnline) (System.currentTimeMillis() - connectTime!!.time).toInt() / 1000 + field else field
     var connectTime: Timestamp? = null

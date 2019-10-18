@@ -8,8 +8,8 @@ import org.bukkit.command.ConsoleCommandSender
 import java.util.ArrayList
 
 class ProxyCommand(cordexProxy: CordexProxy, name: String, permission: String, vararg aliases: String) : BaseCommand(cordexProxy, name, permission, *aliases) {
-    override fun execute(commandSender: CommandSender, strings: Array<String>) {
-        val result = call(strings)
+    override fun execute(commandSender: CommandSender, args: Array<String>) {
+        val result = call(args)
 
         if (commandSender is ProxiedPlayer) {
             if (!commandSender.hasPermission("cordex.proxy"))

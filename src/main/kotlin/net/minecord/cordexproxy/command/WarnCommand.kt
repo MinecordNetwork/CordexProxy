@@ -7,7 +7,7 @@ import net.md_5.bungee.api.CommandSender
 import net.md_5.bungee.api.connection.ProxiedPlayer
 
 class WarnCommand(cordexProxy: CordexProxy, name: String, permission: String, vararg aliases: String) : BaseCommand(cordexProxy, name, permission, *aliases) {
-    override fun execute(commandSender: CommandSender, strings: Array<String>) {
+    override fun execute(commandSender: CommandSender, args: Array<String>) {
         var admin: CordPlayer? = null
         if (commandSender is ProxiedPlayer) {
             if (!commandSender.hasPermission("cordex.warn"))
@@ -15,12 +15,12 @@ class WarnCommand(cordexProxy: CordexProxy, name: String, permission: String, va
             admin = cordexProxy.playerController.getPlayer(commandSender)
         }
 
-        if (strings.size < 2) {
+        if (args.size < 2) {
             admin?.sendMessage("banlist", "%prefix% Example warn: &e/warn Nick Swearing &7more at &b/cordex ban")
             return
         }
 
-        val proxiedTarget = ProxyServer.getInstance().getPlayer(strings[0])
+        val proxiedTarget = ProxyServer.getInstance().getPlayer(args[0])
         if (proxiedTarget == null || proxiedTarget.isConnected) {
             admin?.sendMessage("banlist", "%prefix% Player not found, manual is at &b/cordex ban")
             return
@@ -29,8 +29,8 @@ class WarnCommand(cordexProxy: CordexProxy, name: String, permission: String, va
         val target = cordexProxy.playerController.getPlayer(proxiedTarget)
 
         var reason = StringBuilder()
-        for (i in 1 until strings.size)
-            reason.append(strings[i]).append(" ")
+        for (i in 1 until args.size)
+            reason.append(args[i]).append(" ")
 
         reason = StringBuilder(reason.substring(0, reason.length - 1))
 

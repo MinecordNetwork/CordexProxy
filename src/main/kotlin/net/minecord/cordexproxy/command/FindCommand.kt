@@ -11,8 +11,8 @@ import net.minecord.cordexproxy.util.colored
 import java.util.HashMap
 
 class FindCommand(cordexProxy: CordexProxy, name: String, permission: String, vararg aliases: String) : BaseCommand(cordexProxy, name, permission, *aliases) {
-    override fun execute(commandSender: CommandSender, strings: Array<String>) {
-        if (strings.isEmpty())
+    override fun execute(commandSender: CommandSender, args: Array<String>) {
+        if (args.isEmpty())
             return
 
         var cordPlayer: CordPlayer? = null
@@ -20,7 +20,7 @@ class FindCommand(cordexProxy: CordexProxy, name: String, permission: String, va
             cordPlayer = cordexProxy.playerController.getPlayer(commandSender)
         }
 
-        val playerToFind = strings[0]
+        val playerToFind = args[0]
         val target = cordexProxy.proxy.getPlayer(playerToFind)
 
         if (target == null) {

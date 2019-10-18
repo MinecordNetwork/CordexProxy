@@ -45,13 +45,13 @@ class RankController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
      * @param name The rank name
      * @return The added player
      */
-    fun getRank(name: String): RankStorage? {
+    fun getRank(name: String): RankStorage {
         for (value in ranks.values) {
-            if (value.getName().toLowerCase() == name.toLowerCase())
+            if (value.name.toLowerCase() == name.toLowerCase())
                 return value
         }
 
-        return ranks[10]
+        return ranks[10] ?: throw NullPointerException()
     }
 
     /**

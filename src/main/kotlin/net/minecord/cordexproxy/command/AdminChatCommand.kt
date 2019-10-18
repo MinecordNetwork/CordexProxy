@@ -6,8 +6,8 @@ import net.md_5.bungee.api.CommandSender
 import net.md_5.bungee.api.connection.ProxiedPlayer
 
 class AdminChatCommand(cordexProxy: CordexProxy, name: String, permission: String, vararg aliases: String) : BaseCommand(cordexProxy, name, permission, *aliases) {
-    override fun execute(commandSender: CommandSender, strings: Array<String>) {
-        if (strings.isEmpty())
+    override fun execute(commandSender: CommandSender, args: Array<String>) {
+        if (args.isEmpty())
             return
 
         var admin: CordPlayer? = null
@@ -18,7 +18,7 @@ class AdminChatCommand(cordexProxy: CordexProxy, name: String, permission: Strin
         }
 
         var message = StringBuilder()
-        for (string in strings)
+        for (string in args)
             message.append(string).append(" ")
 
         message = StringBuilder(cordexProxy.chatController.fixMessage(message.substring(0, message.length - 1)))

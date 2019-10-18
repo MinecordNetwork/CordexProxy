@@ -2,7 +2,7 @@ package net.minecord.cordexproxy.model.controller.player
 
 import net.md_5.bungee.api.ChatColor
 
-class RankStorage(private val name: String, val basicPermission: String, private val stringColor: String, val chatColor: ChatColor) {
+class RankStorage(val name: String, val basicPermission: String, private val stringColor: String, val chatColor: ChatColor) {
     val isAdmin: Boolean
         get() {
             return when (basicPermission) {
@@ -18,8 +18,4 @@ class RankStorage(private val name: String, val basicPermission: String, private
 
     val prefix: String
         get() = ChatColor.translateAlternateColorCodes('&', stringColor + name.toUpperCase()) + ChatColor.RESET + " "
-
-    fun getName(): String {
-        return name
-    }
 }

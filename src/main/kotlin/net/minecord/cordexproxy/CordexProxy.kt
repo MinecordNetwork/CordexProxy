@@ -94,6 +94,7 @@ class CordexProxy : Plugin() {
         proxy.pluginManager.registerCommand(this, MuteCommand(this, "mute", "cordex.mute"))
         proxy.pluginManager.registerCommand(this, FindCommand(this, "find", "default.global"))
         proxy.pluginManager.registerCommand(this, ProxyCommand(this, "proxy", "cordex.proxy"))
+        proxy.pluginManager.registerCommand(this, WhoIsCommand(this, "whois", "cordex.whois"))
     }
 
     override fun onDisable() {

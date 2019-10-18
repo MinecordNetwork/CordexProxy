@@ -7,7 +7,7 @@ import net.md_5.bungee.api.CommandSender
 import net.md_5.bungee.api.connection.ProxiedPlayer
 
 class MuteCommand(cordexProxy: CordexProxy, name: String, permission: String, vararg aliases: String) : BaseCommand(cordexProxy, name, permission, *aliases) {
-    override fun execute(commandSender: CommandSender, strings: Array<String>) {
+    override fun execute(commandSender: CommandSender, args: Array<String>) {
         var admin: CordPlayer? = null
         if (commandSender is ProxiedPlayer) {
             if (!commandSender.hasPermission("cordex.mute"))
@@ -15,26 +15,26 @@ class MuteCommand(cordexProxy: CordexProxy, name: String, permission: String, va
             admin = cordexProxy.playerController.getPlayer(commandSender)
         }
 
-        if (strings.size < 3) {
+        if (args.size < 3) {
             admin?.sendMessage("banlist", "%prefix% Example mute: &e/mute Nick Swearing 20m &7more at &b/cordex ban")
             return
         }
 
-        val proxiedPlayer = ProxyServer.getInstance().getPlayer(strings[0])
+        val proxiedPlayer = ProxyServer.getInstance().getPlayer(args[0])
         if (proxiedPlayer == null) {
             admin?.sendMessage("banlist", "%prefix% Player not found, manual is at &b/cordex ban")
             return
         }
 
-        val target = cordexProxy.playerController.getPlayer(ProxyServer.getInstance().getPlayer(strings[0]))
+        val target = cordexProxy.playerController.getPlayer(ProxyServer.getInstance().getPlayer(args[0]))
 
         var reason = StringBuilder()
-        for (i in 1 until strings.size - 1)
-            reason.append(strings[i]).append(" ")
+        for (i in 1 until args.size - 1)
+            reason.append(args[i]).append(" ")
 
         reason = StringBuilder(reason.substring(0, reason.length - 1))
 
-        val howLong = strings[strings.size - 1]
+        val howLong = args[args.size - 1]
 
         var duration = Integer.valueOf(howLong.substring(0, howLong.length - 1))
 

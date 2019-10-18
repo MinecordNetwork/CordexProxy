@@ -7,7 +7,7 @@ import net.md_5.bungee.api.ProxyServer
 import net.md_5.bungee.api.connection.ProxiedPlayer
 
 class UnbanCommand(cordexProxy: CordexProxy, name: String, permission: String, vararg aliases: String) : BaseCommand(cordexProxy, name, permission, *aliases) {
-    override fun execute(commandSender: CommandSender, strings: Array<String>) {
+    override fun execute(commandSender: CommandSender, args: Array<String>) {
         var admin: CordPlayer? = null
         if (commandSender is ProxiedPlayer) {
             if (!commandSender.hasPermission("cordex.ban"))
@@ -15,12 +15,12 @@ class UnbanCommand(cordexProxy: CordexProxy, name: String, permission: String, v
             admin = cordexProxy.playerController.getPlayer(commandSender)
         }
 
-        if (strings.isEmpty()) {
+        if (args.isEmpty()) {
             admin?.sendMessage("banlist", "%prefix% Example unban: &e/unban Nick &7more at &b/cordex ban")
             return
         }
 
-        val target = cordexProxy.cacheController.getPlayerData(strings[0])
+        val target = cordexProxy.cacheController.getPlayerData(args[0])
         if (target == null) {
             admin?.sendMessage("banlist", "%prefix% Player not found, manual is at &b/cordex ban")
             return

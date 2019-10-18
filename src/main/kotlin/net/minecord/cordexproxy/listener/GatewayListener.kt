@@ -37,7 +37,7 @@ class GatewayListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler
     fun updatePlayerInfo(e: UpdatePlayerInfoEvent) {
         val playerInfo = e.playerInfo
-        val playerStorage = PlayerStorage(0, playerInfo.name, playerInfo.uuid, playerInfo.isOnline, false, playerInfo.type.toString().toLowerCase(), false, 0, null, 0, playerInfo.ip, 0, null, null, null, null, cordexProxy.rankController.getRank("default"))
+        val playerStorage = PlayerStorage(0, playerInfo.name, playerInfo.uuid, playerInfo.isOnline, false, playerInfo.type.toString().toLowerCase(), false, 0, "", 0, playerInfo.ip, 0, null, null, null, null, cordexProxy.rankController.getRank("default"))
 
         cordexProxy.databaseController.updatePlayerData(playerStorage)
 
