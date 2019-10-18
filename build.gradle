@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+    id 'org.jetbrains.kotlin.kapt' version '1.3.50'
+}
+
+def pluginName = 'CordexProxy'
+
+group 'net.minecord'
+version '0.1-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://dl.bintray.com/nuvotifier/maven/' }
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compileOnly group: 'net.md-5', name: 'bungeecord-api', version: '1.14-SNAPSHOT'
+    compileOnly group: 'org.spigotmc', name: 'plugin-annotations', version: '1.2.2-SNAPSHOT'
+    compileOnly 'com.vexsoftware:nuvotifier-bungeecord:2.3.4'
+    compileOnly 'eu.haelexuis:bungateway:1.0'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+}
+
+jar {
+    archiveName pluginName + '-' + version + '.jar'
+    manifest {
+        attributes 'Main-Class': group + '.' + pluginName.toLowerCase() + '.' + pluginName
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}

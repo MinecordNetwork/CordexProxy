@@ -1,0 +1,6 @@
+database:
+  host: localhost
+  name: minecraft
+  port: 3306
+  user: minecraft
+  pass: password
