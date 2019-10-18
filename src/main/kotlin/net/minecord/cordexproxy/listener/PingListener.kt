@@ -62,6 +62,17 @@ class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
 
                 if (motdStorage.isSecondCentered)
                     secondLine = secondLine.centerMotdMessage()
+
+                val iconName = if (ipData.country == "SK" || ipData.country == "CZ")
+                    "server-icon-local.png"
+                else
+                    "server-icon.png"
+
+                try {
+                    event.response.setFavicon(Favicon.create(ImageIO.read(File(iconName))))
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
             }
 
             event.response.players.max = cordexProxy.cacheController.getPlayerRecord() + 1
