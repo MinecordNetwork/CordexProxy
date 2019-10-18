@@ -11,6 +11,6 @@ open class BaseCommand internal constructor(var cordexProxy: CordexProxy, name: 
     }
 
     override fun onTabComplete(sender: CommandSender?, args: Array<out String>?): MutableIterable<String> {
-        return mutableListOf("")
+        return mutableListOf()
     }
 }
