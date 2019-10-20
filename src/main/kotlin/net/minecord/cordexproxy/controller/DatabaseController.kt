@@ -132,6 +132,24 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
     }
 
     /**
+     * Caches translations from database to memory
+     */
+    internal fun loadBanedNicknames(): ArrayList<String> {
+        val nicknames= arrayListOf<String>()
+
+        try {
+            val rs = mysql.query("SELECT * FROM `minecraft_ban` b JOIN `minecraft_player` p ON b.target_id = p.id WHERE b.`is_active`='1'")!!.resultSet
+            while (rs.next())
+                nicknames.add(rs.getString("name"))
+            rs.close()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+
+        return nicknames
+    }
+
+    /**
      * Caches servers from database to memory
      */
     internal fun loadServers(): List<ServerStorage> {

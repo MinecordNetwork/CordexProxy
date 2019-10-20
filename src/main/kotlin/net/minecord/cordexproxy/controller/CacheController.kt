@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 class CacheController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
+    val bannedNicknames = cordexProxy.databaseController.loadBanedNicknames()
     private val ipCache = ConcurrentHashMap<String, IpStorage>()
     private val banIpCache = ConcurrentHashMap<Int, BanStorage>()
     private val banPlayerCache = ConcurrentHashMap<Int, BanStorage>()
@@ -119,9 +120,11 @@ class CacheController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         banPlayerCache[banStorage.targetId] = banStorage
     }
 
-    fun removeBanData(playerId: Int, playerIp: Int) {
+    fun removeBanData(playerId: Int, playerIp: Int, nickname: String? = null) {
         banIpCache.remove(playerIp)
         banPlayerCache.remove(playerId)
+        if (nickname != null)
+            bannedNicknames.remove(nickname)
     }
 
     fun getBanData(ipAddress: Int, playerId: Int): BanStorage? {

@@ -33,7 +33,22 @@ class UnbanCommand(cordexProxy: CordexProxy, name: String, permission: String, v
             admin?.sendMessage("banlist", "%prefix% Player &a" + target.name + " &7successfully unbanned")
         }
 
-        cordexProxy.cacheController.removeBanData(target.id, target.lastIp)
+        cordexProxy.cacheController.removeBanData(target.id, target.lastIp, target.name)
         cordexProxy.banController.removeBan(target.id, target.lastIp)
+    }
+
+    override fun onTabComplete(sender: CommandSender?, args: Array<out String>?): MutableIterable<String> {
+        val list = mutableListOf<String>()
+
+        if (args != null) {
+            when {
+                args.size == 1 -> for (nickname in cordexProxy.cacheController.bannedNicknames) {
+                    if (nickname.contains(args[0], true))
+                        list.add(nickname)
+                }
+            }
+        }
+
+        return list
     }
 }
