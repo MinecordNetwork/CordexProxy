@@ -53,22 +53,27 @@ class MuteCommand(cordexProxy: CordexProxy, name: String, permission: String, va
     override fun onTabComplete(sender: CommandSender?, args: Array<out String>?): MutableIterable<String> {
         val list = mutableListOf<String>()
 
-        if (args == null || args.size == 1) {
-            for (player in ProxyServer.getInstance().players) {
-                list.add(player.name)
+        if (args != null) {
+            when {
+                args.size == 1 -> for (player in ProxyServer.getInstance().players) {
+                    if (player.name.startsWith(args[0], true) || player.name.contains(args[0], true))
+                        list.add(player.name)
+                }
+                args.size == 2 -> {
+                    val reasons = listOf("Insulting", "Swearing", "Advertisement", "Spam", "Stupidity")
+                    for (reason in reasons) {
+                        if (reason.startsWith(args[1], true))
+                            list.add(reason)
+                    }
+                }
+                args.size == 3 -> {
+                    val durations = listOf("15m", "30m", "1h", "2h", "4h")
+                    for (duration in durations) {
+                        if (duration.startsWith(args[2], true))
+                            list.add(duration)
+                    }
+                }
             }
-        } else if (args.size == 2) {
-            list.add("Insulting")
-            list.add("Swearing")
-            list.add("Advertisement")
-            list.add("Spam")
-            list.add("Stupidity")
-        } else if (args.size == 3) {
-            list.add("15m")
-            list.add("30m")
-            list.add("1h")
-            list.add("2h")
-            list.add("4h")
         }
 
         return list

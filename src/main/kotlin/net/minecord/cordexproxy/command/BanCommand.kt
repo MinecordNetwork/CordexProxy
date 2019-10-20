@@ -56,26 +56,27 @@ class BanCommand(cordexProxy: CordexProxy, name: String, permission: String, var
     override fun onTabComplete(sender: CommandSender?, args: Array<out String>?): MutableIterable<String> {
         val list = mutableListOf<String>()
 
-        if (args == null || args.size == 1) {
-            for (player in ProxyServer.getInstance().players) {
-                list.add(player.name)
+        if (args != null) {
+            when {
+                args.size == 1 -> for (player in ProxyServer.getInstance().players) {
+                    if (player.name.startsWith(args[0], true) || player.name.contains(args[0], true))
+                        list.add(player.name)
+                }
+                args.size == 2 -> {
+                    val reasons = listOf("Cheating", "Flyhack", "Bugging", "Insulting", "Swearing", "Griefing", "Advertisement", "Spam", "Stupidity")
+                    for (reason in reasons) {
+                        if (reason.startsWith(args[1], true))
+                            list.add(reason)
+                    }
+                }
+                args.size == 3 -> {
+                    val durations = listOf("1h", "4h", "2d", "7d", "14d", "30d")
+                    for (duration in durations) {
+                        if (duration.startsWith(args[2], true))
+                            list.add(duration)
+                    }
+                }
             }
-        } else if (args.size == 2) {
-            list.add("Cheating")
-            list.add("Insulting")
-            list.add("Swearing")
-            list.add("Bugging")
-            list.add("Griefing")
-            list.add("Advertisement")
-            list.add("Spam")
-            list.add("Flyhack")
-            list.add("Stupidity")
-        } else if (args.size == 3) {
-            list.add("1h")
-            list.add("2d")
-            list.add("7d")
-            list.add("14d")
-            list.add("30d")
         }
 
         return list

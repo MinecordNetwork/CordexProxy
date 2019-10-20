@@ -42,18 +42,20 @@ class KickCommand : BaseCommand {
     override fun onTabComplete(sender: CommandSender?, args: Array<out String>?): MutableIterable<String> {
         val list = mutableListOf<String>()
 
-        if (args == null || args.size == 1) {
-            for (player in ProxyServer.getInstance().players) {
-                list.add(player.name)
+        if (args != null) {
+            when {
+                args.size == 1 -> for (player in ProxyServer.getInstance().players) {
+                    if (player.name.startsWith(args[0], true) || player.name.contains(args[0], true))
+                        list.add(player.name)
+                }
+                args.size == 2 -> {
+                    val reasons = listOf("Bugging", "Insulting", "Swearing", "Griefing", "Advertisement", "Spam", "Stupidity")
+                    for (reason in reasons) {
+                        if (reason.startsWith(args[1], true))
+                            list.add(reason)
+                    }
+                }
             }
-        } else if (args.size == 2) {
-            list.add("Bugging")
-            list.add("Insulting")
-            list.add("Swearing")
-            list.add("Griefing")
-            list.add("Advertisement")
-            list.add("Spam")
-            list.add("Stupidity")
         }
 
         return list
