@@ -12,7 +12,9 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 class CacheController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
-    val bannedNicknames = cordexProxy.databaseController.loadBanedNicknames()
+    val bannedNicknames by lazy {
+        cordexProxy.databaseController.loadBanedNicknames()
+    }
     private val ipCache = ConcurrentHashMap<String, IpStorage>()
     private val banIpCache = ConcurrentHashMap<Int, BanStorage>()
     private val banPlayerCache = ConcurrentHashMap<Int, BanStorage>()
