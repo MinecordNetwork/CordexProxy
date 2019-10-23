@@ -21,7 +21,7 @@ class WarnCommand(cordexProxy: CordexProxy, name: String, permission: String, va
         }
 
         val proxiedTarget = ProxyServer.getInstance().getPlayer(args[0])
-        if (proxiedTarget == null || proxiedTarget.isConnected) {
+        if (proxiedTarget == null) {
             admin?.sendMessage("banlist", "%prefix% Player not found, manual is at &b/cordex ban")
             return
         }
