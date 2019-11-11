@@ -12,15 +12,14 @@ class RankController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
 
     init {
         ranks[0] = RankStorage("Owner", "owner.global", "&c&l", ChatColor.RED)
+        ranks[2] = RankStorage("Developer", "developer.global", "&c&l", ChatColor.RED)
         ranks[1] = RankStorage("Admin", "admin.global", "&c&l", ChatColor.RED)
-        ranks[2] = RankStorage("Builder", "builder.global", "&c&l", ChatColor.RED)
-        ranks[3] = RankStorage("Support", "support.global", "&c&l", ChatColor.RED)
+        ranks[3] = RankStorage("Builder", "builder.global", "&c&l", ChatColor.RED)
+        ranks[4] = RankStorage("Support", "support.global", "&c&l", ChatColor.RED)
         ranks[5] = RankStorage("Trainee", "trainee.global", "&6&l", ChatColor.GOLD)
-        ranks[6] = RankStorage("YouTuber", "youtuber.global", "&c&l", ChatColor.RED)
-        ranks[7] = RankStorage("Hero", "hero.global", "&b&l", ChatColor.AQUA)
-        ranks[8] = RankStorage("Magic", "magic.global", "&a&l", ChatColor.GREEN)
-        ranks[9] = RankStorage("Basic", "basic.global", "&e&l", ChatColor.YELLOW)
-        ranks[10] = RankStorage("Member", "default.global", "&9&l", ChatColor.BLUE)
+        ranks[6] = RankStorage("Streamer", "streamer.global", "&a&l", ChatColor.AQUA)
+        ranks[7] = RankStorage("VIP", "premium.global", "&a&l", ChatColor.GREEN)
+        ranks[8] = RankStorage("Member", "default.global", "&9&l", ChatColor.BLUE)
 
         cordexProxy.logController.log("RankController &b| &7Loaded &a${ranks.size} &7ranks", LogType.INFO)
     }
