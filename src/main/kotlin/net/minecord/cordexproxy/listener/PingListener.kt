@@ -89,7 +89,7 @@ class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             }
         }
 
-        event.response.version = ServerPing.Protocol("1.15", 573)
+        //event.response.version = ServerPing.Protocol("1.14 - 1.15", 573)
         event.response.descriptionComponent = ComponentBuilder(firstLine + "\n" + secondLine).create()[0]
     }
 }
