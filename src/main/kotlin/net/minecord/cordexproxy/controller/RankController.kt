@@ -50,7 +50,7 @@ class RankController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
                 return value
         }
 
-        return ranks[10] ?: throw NullPointerException()
+        return ranks[8] ?: throw NullPointerException()
     }
 
     /**
