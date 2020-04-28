@@ -23,15 +23,17 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
     init {
         cordexProxy.proxy.scheduler.schedule(cordexProxy, {
             mutedPlayers.forEach { (uuid, muteStorage) ->
-                val cordPlayer = cordexProxy.playerController.getPlayerByUniqueId(muteStorage.uuid!!)
-
                 val ms = muteStorage.expireAt!!.time - System.currentTimeMillis()
-                val expire = ms.toInt().formatTime()
 
-                if (ms <= 0)
+                if (ms <= 0) {
                     mutedPlayers.remove(uuid)
+                } else {
+                    try {
+                        val cordPlayer = cordexProxy.playerController.getPlayerByUniqueId(muteStorage.uuid!!)
+                        cordPlayer.sendActionBar(cordPlayer.translateMessage("muteReminder").replace("%time%", ms.toInt().formatTime()).colored())
 
-                else cordPlayer.sendActionBar(cordPlayer.translateMessage("muteReminder").replace("%time%", expire).colored())
+                    } catch (e: NullPointerException) { }
+                }
             }
         }, 0, 1, TimeUnit.SECONDS)
 
