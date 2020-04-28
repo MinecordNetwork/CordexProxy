@@ -2,7 +2,6 @@ package net.minecord.cordexproxy.util
 
 import net.md_5.bungee.api.ChatColor
 import net.minecord.cordexproxy.model.controller.chat.DefaultFontInfo
-import net.minecord.cordexproxy.model.controller.translation.LanguageType
 
 fun String.colored(colorChar: Char = '&'): String {
     return ChatColor.translateAlternateColorCodes(colorChar, this)

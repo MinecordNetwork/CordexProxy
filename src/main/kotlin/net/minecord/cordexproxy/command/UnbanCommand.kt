@@ -3,7 +3,6 @@ package net.minecord.cordexproxy.command
 import net.minecord.cordexproxy.CordexProxy
 import net.minecord.cordexproxy.model.controller.player.CordPlayer
 import net.md_5.bungee.api.CommandSender
-import net.md_5.bungee.api.ProxyServer
 import net.md_5.bungee.api.connection.ProxiedPlayer
 
 class UnbanCommand(cordexProxy: CordexProxy, name: String, permission: String, vararg aliases: String) : BaseCommand(cordexProxy, name, permission, *aliases) {

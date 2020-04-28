@@ -5,7 +5,6 @@ import net.md_5.bungee.api.plugin.Plugin
 
 import java.sql.*
 import java.util.concurrent.TimeUnit
-import java.util.logging.Logger
 
 class MySQL(hostname: String, port: Int, database: String, username: String, password: String, private val plugin: Plugin) {
     private var aliveConnection: Connection? = null

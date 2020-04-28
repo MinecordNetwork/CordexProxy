@@ -3,7 +3,6 @@ package net.minecord.cordexproxy.model.controller.util
 import net.minecord.cordexproxy.controller.UtilController
 
 import java.net.MalformedURLException
-import java.util.HashMap
 
 class MojangUtil(private val utilController: UtilController) {
     private val hasPaidCache = hashMapOf<String, Boolean>()

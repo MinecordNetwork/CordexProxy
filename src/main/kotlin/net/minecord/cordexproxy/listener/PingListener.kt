@@ -5,7 +5,6 @@ import net.minecord.cordexproxy.CordexProxy
 import net.minecord.cordexproxy.model.controller.chat.MotdStorage
 import net.minecord.cordexproxy.model.controller.chat.MotdType
 import net.md_5.bungee.api.Favicon
-import net.md_5.bungee.api.ServerPing
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.event.ProxyPingEvent
 import net.md_5.bungee.event.EventHandler

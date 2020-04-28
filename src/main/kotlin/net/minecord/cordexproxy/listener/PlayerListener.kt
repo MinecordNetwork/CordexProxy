@@ -1,8 +1,6 @@
 package net.minecord.cordexproxy.listener
 
 import net.minecord.cordexproxy.CordexProxy
-import net.minecord.cordexproxy.model.controller.player.CordPlayer
-import net.minecord.cordexproxy.model.controller.server.ServerStorage
 import net.md_5.bungee.api.event.ServerConnectEvent
 import net.md_5.bungee.api.event.ServerConnectedEvent
 import net.md_5.bungee.event.EventHandler

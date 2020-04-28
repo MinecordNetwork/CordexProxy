@@ -5,7 +5,6 @@ import net.minecord.cordexproxy.model.controller.player.CordPlayer
 import net.md_5.bungee.api.CommandSender
 import net.md_5.bungee.api.ProxyServer
 import net.md_5.bungee.api.connection.ProxiedPlayer
-import org.bukkit.command.TabCompleter
 
 class BanCommand(cordexProxy: CordexProxy, name: String, permission: String, vararg aliases: String) : BaseCommand(cordexProxy, name, permission, *aliases) {
     override fun execute(commandSender: CommandSender, args: Array<String>) {
