@@ -40,8 +40,8 @@ class UnbanCommand(cordexProxy: CordexProxy, name: String, permission: String, v
         val list = mutableListOf<String>()
 
         if (args != null) {
-            when {
-                args.size == 1 -> for (nickname in cordexProxy.cacheController.bannedNicknames) {
+            when (args.size) {
+                1 -> for (nickname in cordexProxy.cacheController.bannedNicknames) {
                     if (nickname.contains(args[0], true))
                         list.add(nickname)
                 }
