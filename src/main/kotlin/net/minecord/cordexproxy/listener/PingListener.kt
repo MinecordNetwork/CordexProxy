@@ -14,6 +14,7 @@ import net.minecord.cordexproxy.util.colored
 import javax.imageio.ImageIO
 import java.io.File
 import java.io.IOException
+import java.net.Inet4Address
 import kotlin.random.Random
 
 class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
@@ -88,7 +89,10 @@ class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             }
         }
 
-        //event.response.version = ServerPing.Protocol("1.14 - 1.15", 573)
+        if (Inet4Address.getLocalHost().hostAddress.startsWith("82.208")) {
+            event.response.players.online = cordexProxy.serverController.getPlayerCount()
+        }
+
         event.response.descriptionComponent = ComponentBuilder(firstLine + "\n" + secondLine).create()[0]
     }
 }

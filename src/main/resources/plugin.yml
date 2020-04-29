@@ -1,4 +1,4 @@
 name: CordexProxy
-main: CordexProxy
+main: net.minecord.cordexproxy.CordexProxy
 version: "0.1"
 author: Rixafy

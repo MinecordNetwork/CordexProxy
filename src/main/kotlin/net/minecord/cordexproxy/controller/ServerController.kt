@@ -51,4 +51,14 @@ class ServerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
     fun getServers(): Collection<ServerStorage> {
         return servers.values
     }
+
+    fun getPlayerCount(): Int {
+        var count = 0
+
+        for (server in servers.values) {
+            count += server.players
+        }
+
+        return count;
+    }
 }

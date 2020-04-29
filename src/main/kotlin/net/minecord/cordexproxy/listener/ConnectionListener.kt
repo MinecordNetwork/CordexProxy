@@ -1,5 +1,6 @@
 package net.minecord.cordexproxy.listener
 
+import net.md_5.bungee.api.ProxyServer
 import net.minecord.cordexproxy.CordexProxy
 import net.md_5.bungee.api.chat.TextComponent
 import net.md_5.bungee.api.event.LoginEvent
@@ -8,6 +9,7 @@ import net.md_5.bungee.api.event.PostLoginEvent
 import net.md_5.bungee.event.EventHandler
 import net.md_5.bungee.event.EventPriority
 import net.minecord.cordexproxy.util.colored
+import java.net.Inet4Address
 
 class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler(priority = EventPriority.LOWEST)
@@ -32,10 +34,14 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             val playerStorage = cordexProxy.cacheController.getPlayerData(e.connection.uniqueId)
             val banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, playerStorage.id)
 
+            if (Inet4Address.getLocalHost().hostAddress.startsWith("82.208")) {
+                e.connection.disconnect(*TextComponent.fromLegacyText("&b&lProsim pripoj se pres nasi novou IP adresu\n\n&fNase nova IP adresa: &emc.minecord.cz".colored()))
+            }
+
             if (banStorage != null)
                 e.connection.disconnect(*TextComponent.fromLegacyText(cordexProxy.translationController.getTranslation(ipStorage.language, "bannedDisconnect").colored().replace("%reason%", banStorage.reason).replace("%expire%", banStorage.expire.toString()).replace("\\n", "\n")))
 
-            if (cordexProxy.cacheController.getConfigValue("whitelist").asBoolean() && !playerStorage.isWhitelisted && !playerStorage.rank!!.isAdmin) {
+            if (cordexProxy.cacheController.getConfigValue("whitelist").asBoolean() && !playerStorage.isWhitelisted && !playerStorage.rank.isAdmin) {
                 val firstLine = cordexProxy.translationController.getTranslation(ipStorage.language, "maintenanceMotdFirstLine").colored()
                 val secondLine = cordexProxy.translationController.getTranslation(ipStorage.language, "maintenanceMotdSecondLine").colored()
                 e.connection.disconnect(*TextComponent.fromLegacyText((firstLine + "\n\n" + secondLine).colored()))
