@@ -370,7 +370,7 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
     }
 
     fun insertPlayerData(playerStorage: PlayerStorage) {
-        val ipAddressId = cordexProxy.cacheController.getIpData(playerStorage.firstIpAddress!!).id
+        val ipAddressId = cordexProxy.cacheController.getIpData(playerStorage.firstIpAddress).id
         val placeholders = listOf(playerStorage.name, playerStorage.uuid.toString(), if (playerStorage.isOnline) "1" else "0", playerStorage.type, ipAddressId.toString(), ipAddressId.toString())
 
         mysql.preparedQuery("INSERT INTO `minecraft_player` (`name`, `uuid`, `is_online`, `type`, `first_ip_address_id`, `last_ip_address_id`) VALUES (?, ?, ?, ?, ?, ?)", placeholders)
@@ -380,6 +380,12 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
         val placeholders = listOf(ban.adminId.toString(), ban.adminIp.toString(), ban.targetId.toString(), ban.targetIp.toString(), ban.reason, if (ban.isIpBan) "1" else "0", ban.expire.toString())
 
         mysql.preparedQuery("INSERT INTO `minecraft_ban` (`admin_id`, `admin_ip`, `target_id`, `target_ip`, `reason`, `is_ipban`, `expire_at`) VALUES (?, ?, ?, ?, ?, ?, ?)", placeholders)
+    }
+
+    fun insertVote(playerId: Int, serverList: String) {
+        val placeholders = listOf(playerId.toString(), serverList)
+
+        mysql.preparedQuery("INSERT INTO `minecraft_vote` (`player_id`, `serverlist`) VALUES (?, ?)", placeholders)
     }
 
     fun updatePlayerData(playerStorage: PlayerStorage) {

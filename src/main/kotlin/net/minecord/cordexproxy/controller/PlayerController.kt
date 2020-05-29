@@ -113,14 +113,16 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
      */
     fun addPlayer(player: ProxiedPlayer) {
         val playerStorage = cordexProxy.cacheController.getPlayerData(player.uniqueId)
-        playerStorage.connectTime = Timestamp(System.currentTimeMillis())
+        if (playerStorage != null) {
+            playerStorage.connectTime = Timestamp(System.currentTimeMillis())
 
-        val cordPlayer = CordPlayer(cordexProxy, player, playerStorage)
+            val cordPlayer = CordPlayer(cordexProxy, player, playerStorage)
 
-        players[player.uniqueId] = cordPlayer
-        cordexProxy.databaseController.updateLastJoin(cordPlayer)
+            players[player.uniqueId] = cordPlayer
+            cordexProxy.databaseController.updateLastJoin(cordPlayer)
 
-        cordexProxy.logController.log("&fPlayer " + cordPlayer.rank.chatColor + player.name + " &fjust &aconnected &fto server", LogType.COLLECTOR)
+            cordexProxy.logController.log("&fPlayer " + cordPlayer.rank.chatColor + player.name + " &fjust &aconnected &fto server", LogType.COLLECTOR)
+        }
     }
 
     /**

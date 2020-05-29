@@ -9,6 +9,7 @@ import net.minecord.bungateway.model.player.PlayerType
 import net.minecord.cordexproxy.CordexProxy
 import net.minecord.cordexproxy.model.controller.player.PlayerStorage
 import net.md_5.bungee.event.EventHandler
+import net.minecord.cordexproxy.model.controller.log.LogType
 
 class GatewayListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler
@@ -29,6 +30,7 @@ class GatewayListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
         val playerInfo = e.playerInfo
         val playerStorage = PlayerStorage(0, playerInfo.name, playerInfo.uuid, playerInfo.isOnline, false, playerInfo.type.toString().toLowerCase(), false, 0, playerInfo.ip, 0, playerInfo.ip, 0, null, null, null, null, cordexProxy.rankController.getRank("default"))
 
+        cordexProxy.logController.log("Inserting data", LogType.DEBUG)
         cordexProxy.databaseController.insertPlayerData(playerStorage)
 
         e.isAccepted = true

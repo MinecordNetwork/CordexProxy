@@ -82,14 +82,14 @@ class CacheController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         return ipCache[ip] ?: throw NullPointerException()
     }
 
-    fun getPlayerData(uuid: UUID): PlayerStorage {
+    fun getPlayerData(uuid: UUID): PlayerStorage? {
         if (!playerCache.containsKey(uuid)) {
             val playerStorage = cordexProxy.databaseController.loadPlayerData(uuid)
             if (playerStorage != null)
                 cachePlayerData(playerStorage)
         }
 
-        return playerCache[uuid] ?: throw NullPointerException()
+        return playerCache[uuid]
     }
 
     fun getPlayerData(name: String): PlayerStorage? {
