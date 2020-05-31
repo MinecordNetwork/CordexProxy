@@ -20,6 +20,10 @@ class VoteListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             service = "MinecraftMP"
         }
 
+        if (service.contains("PlanetMinecraft")) {
+            service = "PlanetMinecraft"
+        }
+
         placeholders["%prefix%"] = cordexProxy.chatController.getPrefix("vote")
         placeholders["%service%"] = service
         if (player != null) {
