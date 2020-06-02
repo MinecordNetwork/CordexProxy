@@ -65,10 +65,10 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         val playerName = cordPlayer.player.name
         val serverName = server.displayName
         val serverTps = ((server.tps * 1000.0).roundToInt() / 1000.0).toString() + ""
-        val serverPlayers = proxyServer.info.players.size
+        val serverPlayers = getPlayers().filter { !it.hidden && it.player.server == proxyServer }.size
         val serverMaxPlayers = server.maxPlayers
         val ping = cordPlayer.player.ping
-        val online = players.size
+        val online = getPlayers().filter { !it.hidden }.size
         val serverRam = server.ramUsage
         val serverRamMax = server.ramMax
 
