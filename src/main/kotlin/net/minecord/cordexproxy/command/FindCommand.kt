@@ -65,8 +65,8 @@ class FindCommand(cordexProxy: CordexProxy, name: String, permission: String, va
         val list = mutableListOf<String>()
 
         if (args != null) {
-            when {
-                args.size == 1 -> for (player in ProxyServer.getInstance().players) {
+            when (args.size) {
+                1 -> for (player in ProxyServer.getInstance().players) {
                     if (player.name.startsWith(args[0], true) || player.name.contains(args[0], true))
                         list.add(player.name)
                 }
