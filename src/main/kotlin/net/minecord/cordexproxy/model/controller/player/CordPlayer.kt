@@ -13,6 +13,7 @@ import java.util.HashMap
 class CordPlayer(private val cordexProxy: CordexProxy, val player: ProxiedPlayer, val data: PlayerStorage) {
     val rank: RankStorage
     val language: LanguageType
+    var hidden = false
 
     init {
         val ipData = cordexProxy.cacheController.getIpData(data.lastIpAddress)
@@ -79,5 +80,13 @@ class CordPlayer(private val cordexProxy: CordexProxy, val player: ProxiedPlayer
      */
     fun sendActionBar(message: String) {
         player.sendMessage(ChatMessageType.ACTION_BAR, *TextComponent.fromLegacyText(message.colored()))
+    }
+
+    fun onVanish() {
+        hidden = !hidden
+    }
+
+    fun show() {
+        hidden = false
     }
 }

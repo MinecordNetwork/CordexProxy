@@ -85,6 +85,7 @@ class CordexProxy : Plugin() {
         proxy.pluginManager.registerListener(this, SecurityListener(this))
         proxy.pluginManager.registerListener(this, ConnectionListener(this))
         proxy.pluginManager.registerListener(this, VoteListener(this))
+        proxy.pluginManager.registerListener(this, VanishListener(this))
 
         proxy.pluginManager.registerCommand(this, AdminChatCommand(this, "a", "cordex.adminchat", "ac"))
         proxy.pluginManager.registerCommand(this, BanCommand(this, "ban", "cordex.ban", "ipban"))

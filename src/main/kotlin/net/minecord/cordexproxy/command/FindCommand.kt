@@ -23,7 +23,7 @@ class FindCommand(cordexProxy: CordexProxy, name: String, permission: String, va
         val playerToFind = args[0]
         val target = cordexProxy.proxy.getPlayer(playerToFind)
 
-        if (target == null) {
+        val findFail = fun(cordPlayer: CordPlayer?, playerToFind: String) {
             val placeholders = HashMap<String, String>()
 
             placeholders["%rcolor%"] = "&f"
@@ -33,12 +33,20 @@ class FindCommand(cordexProxy: CordexProxy, name: String, permission: String, va
                 cordPlayer.sendMessage("find", cordPlayer.translateMessage("findFailed"), placeholders)
             else
                 cordexProxy.proxy.console.sendMessage(*TextComponent.fromLegacyText("Player $playerToFind is offline"))
+        }
 
+        if (target == null) {
+            findFail(cordPlayer, playerToFind)
             return
         }
 
         val cordTarget = cordexProxy.playerController.getPlayer(target)
         val serverTarget = cordexProxy.serverController.getServer(target.server.info.name)
+
+        if (cordTarget.hidden) {
+            findFail(cordPlayer, playerToFind)
+            return
+        }
 
         if (cordPlayer != null) {
             val placeholders = HashMap<String, String>()
@@ -66,9 +74,9 @@ class FindCommand(cordexProxy: CordexProxy, name: String, permission: String, va
 
         if (args != null) {
             when (args.size) {
-                1 -> for (player in ProxyServer.getInstance().players) {
-                    if (player.name.startsWith(args[0], true) || player.name.contains(args[0], true))
-                        list.add(player.name)
+                1 -> for (player in cordexProxy.playerController.getPlayers()) {
+                    if (!player.hidden && (player.player.name.startsWith(args[0], true) || player.player.name.contains(args[0], true)))
+                        list.add(player.player.name)
                 }
             }
         }
