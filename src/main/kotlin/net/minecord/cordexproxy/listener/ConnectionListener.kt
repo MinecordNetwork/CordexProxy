@@ -34,15 +34,13 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
 
             val ipStorage = cordexProxy.cacheController.getIpData(e.connection.address.address.hostAddress)
             val playerStorage = cordexProxy.cacheController.getPlayerData(e.connection.uniqueId)
+            var banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, null)
             if (playerStorage != null) {
-                val banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, playerStorage.id)
+                banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, playerStorage.id)
 
                 if (Inet4Address.getLocalHost().hostAddress.startsWith("82.208")) {
                     e.connection.disconnect(*TextComponent.fromLegacyText("&b&lProsim pripoj se pres nasi novou IP adresu\n\n&fNase nova IP adresa: &emc.minecord.cz".colored()))
                 }
-
-                if (banStorage != null)
-                    e.connection.disconnect(*TextComponent.fromLegacyText(cordexProxy.translationController.getTranslation(ipStorage.language, "bannedDisconnect").colored().replace("%reason%", banStorage.reason).replace("%expire%", banStorage.expire.toString()).replace("\\n", "\n")))
 
                 if (cordexProxy.cacheController.getConfigValue("whitelist").asBoolean() && !playerStorage.isWhitelisted && !playerStorage.rank.isAdmin) {
                     val firstLine = cordexProxy.translationController.getTranslation(ipStorage.language, "maintenanceMotdFirstLine").colored()
@@ -50,6 +48,9 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                     e.connection.disconnect(*TextComponent.fromLegacyText((firstLine + "\n\n" + secondLine).colored()))
                 }
             }
+
+            if (banStorage != null)
+                e.connection.disconnect(*TextComponent.fromLegacyText(cordexProxy.translationController.getTranslation(ipStorage.language, "bannedDisconnect").colored().replace("%reason%", banStorage.reason).replace("%expire%", banStorage.expire.toString()).replace("\\n", "\n")))
 
             e.completeIntent(cordexProxy)
         }

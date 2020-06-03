@@ -129,9 +129,9 @@ class CacheController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
             bannedNicknames.remove(nickname)
     }
 
-    fun getBanData(ipAddress: Int, playerId: Int): BanStorage? {
+    fun getBanData(ipAddress: Int, playerId: Int?): BanStorage? {
         var banStorage = banIpCache[ipAddress]
-        if (banStorage == null)
+        if (banStorage == null && playerId !== null)
             banStorage = banPlayerCache[playerId]
         return banStorage
     }

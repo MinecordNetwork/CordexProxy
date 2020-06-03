@@ -11,9 +11,7 @@ import net.minecord.cordexproxy.util.colored
 import net.minecord.cordexproxy.util.formatTime
 import java.lang.NullPointerException
 import java.sql.Timestamp
-import java.util.Calendar
-import java.util.HashMap
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
