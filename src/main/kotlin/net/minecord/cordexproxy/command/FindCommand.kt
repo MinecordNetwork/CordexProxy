@@ -3,7 +3,6 @@ package net.minecord.cordexproxy.command
 import net.minecord.cordexproxy.CordexProxy
 import net.minecord.cordexproxy.model.controller.player.CordPlayer
 import net.md_5.bungee.api.CommandSender
-import net.md_5.bungee.api.ProxyServer
 import net.md_5.bungee.api.chat.*
 import net.md_5.bungee.api.connection.ProxiedPlayer
 import net.minecord.cordexproxy.util.colored
@@ -43,7 +42,15 @@ class FindCommand(cordexProxy: CordexProxy, name: String, permission: String, va
         val cordTarget = cordexProxy.playerController.getPlayer(target)
         val serverTarget = cordexProxy.serverController.getServer(target.server.info.name)
 
-        if (cordTarget.hidden) {
+        var bypass = false
+
+        if (cordPlayer != null) {
+            if (cordPlayer.rank.isAdmin) {
+                bypass = true
+            }
+        }
+
+        if (cordTarget.hidden && !bypass) {
             findFail(cordPlayer, playerToFind)
             return
         }
@@ -71,11 +78,18 @@ class FindCommand(cordexProxy: CordexProxy, name: String, permission: String, va
 
     override fun onTabComplete(sender: CommandSender?, args: Array<out String>?): MutableIterable<String> {
         val list = mutableListOf<String>()
+        var bypass = false
+
+        if (sender is ProxiedPlayer) {
+            if (cordexProxy.playerController.getPlayer(sender).rank.isAdmin) {
+                bypass = true
+            }
+        }
 
         if (args != null) {
             when (args.size) {
                 1 -> for (player in cordexProxy.playerController.getPlayers()) {
-                    if (!player.hidden && (player.player.name.startsWith(args[0], true) || player.player.name.contains(args[0], true)))
+                    if ((!player.hidden || bypass) && (player.player.name.startsWith(args[0], true) || player.player.name.contains(args[0], true)))
                         list.add(player.player.name)
                 }
             }
