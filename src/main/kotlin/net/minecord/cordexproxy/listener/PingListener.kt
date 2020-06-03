@@ -76,8 +76,8 @@ class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             event.response.players.max = cordexProxy.cacheController.getPlayerRecord() + 1
 
         } else {
-            firstLine = cordexProxy.translationController.getTranslation(languageType, "banMotdFirstLine").replace("%expire%", banData.expire.toString()).replace("%reason%", banData.reason).replace("%network%", networkName).colored().centerMotdMessage()
-            secondLine = cordexProxy.translationController.getTranslation(languageType, "banMotdSecondLine").replace("%expire%", banData.expire.toString()).replace("%reason%", banData.reason).replace("%network%", networkName).colored().centerMotdMessage()
+            firstLine = (cordexProxy.translationController.getTranslation(languageType, "banMotdFirstLine").replace("%expire%", banData.getFriendlyLeftTime()).replace("%reason%", banData.reason).replace("%network%", networkName)).colored()
+            secondLine = (cordexProxy.translationController.getTranslation(languageType, "banMotdSecondLine").replace("%expire%", banData.getFriendlyLeftTime()).replace("%reason%", banData.reason).replace("%network%", networkName)).colored()
 
             event.response.players.max = Random.nextInt(1000)
             event.response.players.online = Random.nextInt(1000)

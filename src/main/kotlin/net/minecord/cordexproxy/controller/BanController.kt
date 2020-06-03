@@ -100,7 +100,7 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
             cordexProxy.translationController.broadcastRandomTranslate("banBroadcast", "banlist", placeholders)
             if (bannedPlayer != null) {
                 val networkName = bannedPlayer.translateMessage("serverName")
-                bannedPlayer.player.disconnect(*TextComponent.fromLegacyText(bannedPlayer.translateMessage("bannedDisconnect").replace("%reason%", reason).replace("%expire%", ban.expire.toString()).replace("\\n", "\n").replace("%network%", networkName).colored()))
+                bannedPlayer.player.disconnect(*TextComponent.fromLegacyText(bannedPlayer.translateMessage("bannedDisconnect").replace("%reason%", reason).replace("%expire%", ban.getFriendlyLeftTime()).replace("\\n", "\n").replace("%network%", networkName).colored()))
             }
         }, 3, TimeUnit.SECONDS)
     }

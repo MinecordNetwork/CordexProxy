@@ -50,7 +50,7 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             }
 
             if (banStorage != null)
-                e.connection.disconnect(*TextComponent.fromLegacyText(cordexProxy.translationController.getTranslation(ipStorage.language, "bannedDisconnect").colored().replace("%reason%", banStorage.reason).replace("%expire%", banStorage.expire.toString()).replace("\\n", "\n")))
+                e.connection.disconnect(*TextComponent.fromLegacyText(cordexProxy.translationController.getTranslation(ipStorage.language, "bannedDisconnect").colored().replace("%reason%", banStorage.reason).replace("%expire%", banStorage.getFriendlyLeftTime()).replace("\\n", "\n")))
 
             e.completeIntent(cordexProxy)
         }
