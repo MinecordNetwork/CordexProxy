@@ -10,7 +10,7 @@ class BanStorage(var id: Int, var targetId: Int, var targetNick: String, var tar
 
         val days = TimeUnit.SECONDS.toDays(seconds).toInt()
         val hours = TimeUnit.SECONDS.toHours(seconds) - days * 24
-        val minutes = TimeUnit.SECONDS.toMinutes(seconds) - TimeUnit.SECONDS.toHours(seconds) * 60
+        val minutes = (TimeUnit.SECONDS.toMinutes(seconds) - TimeUnit.SECONDS.toHours(seconds) * 60) + 1
 
         return if (days == 0) {
             return if (hours == 0L) {

@@ -99,8 +99,22 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
             placeholders["%reason%"] = reason
             cordexProxy.translationController.broadcastRandomTranslate("banBroadcast", "banlist", placeholders)
             if (bannedPlayer != null) {
-                val networkName = bannedPlayer.translateMessage("serverName")
-                bannedPlayer.player.disconnect(*TextComponent.fromLegacyText(bannedPlayer.translateMessage("bannedDisconnect").replace("%reason%", reason).replace("%expire%", ban.getFriendlyLeftTime()).replace("\\n", "\n").replace("%network%", networkName).colored()))
+                val ipStorage = cordexProxy.databaseController.loadIpData(bannedPlayer.data.lastIpAddress)
+
+                var text = cordexProxy.translationController.getTranslation(bannedPlayer.language, "bannedDisconnect").colored().replace("%reason%", ban.reason).replace("%expire%", ban.getFriendlyLeftTime()).replace("\\n", "\n")
+
+                text = text.replace("%country%", ipStorage.country)
+                text = text.replace("%nick%", bannedPlayer.player.name)
+
+                if (ipStorage.country == "CZ") {
+                    text = text.replace("%number%", "90733149")
+                    text = text.replace("%price%", "149 Kc")
+                } else if (ipStorage.country == "SK") {
+                    text = text.replace("%number%", "88770600")
+                    text = text.replace("%price%", "6,00 €")
+                }
+
+                bannedPlayer.player.disconnect(*TextComponent.fromLegacyText(text))
             }
         }, 3, TimeUnit.SECONDS)
     }

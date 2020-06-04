@@ -1,6 +1,5 @@
 package net.minecord.cordexproxy.listener
 
-import net.md_5.bungee.api.ProxyServer
 import net.minecord.cordexproxy.CordexProxy
 import net.md_5.bungee.api.chat.TextComponent
 import net.md_5.bungee.api.event.LoginEvent
@@ -8,7 +7,6 @@ import net.md_5.bungee.api.event.PlayerDisconnectEvent
 import net.md_5.bungee.api.event.PostLoginEvent
 import net.md_5.bungee.event.EventHandler
 import net.md_5.bungee.event.EventPriority
-import net.minecord.cordexproxy.model.controller.log.LogType
 import net.minecord.cordexproxy.util.colored
 import java.net.Inet4Address
 
@@ -30,8 +28,6 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     fun loginEvent(e: LoginEvent) {
         e.registerIntent(cordexProxy)
         cordexProxy.proxy.scheduler.runAsync(cordexProxy) {
-            cordexProxy.logController.log("LoginEvent", LogType.DEBUG)
-
             val ipStorage = cordexProxy.cacheController.getIpData(e.connection.address.address.hostAddress)
             val playerStorage = cordexProxy.cacheController.getPlayerData(e.connection.uniqueId)
             var banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, null)
@@ -54,8 +50,6 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
 
                 text = text.replace("%country%", ipStorage.country)
                 text = text.replace("%nick%", banStorage.targetNick)
-
-                cordexProxy.logController.log(ipStorage.country, LogType.DEBUG)
 
                 if (ipStorage.country == "CZ") {
                     text = text.replace("%number%", "90733149")
