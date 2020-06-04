@@ -89,7 +89,7 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
 
         val expire = Timestamp(cal.time.time)
 
-        val ban = BanStorage(0, target.id, target.lastIp, adminId, adminIp, reason, expire, ipBan, true)
+        val ban = BanStorage(0, target.id, target.name, target.lastIp, adminId, adminIp, reason, expire, ipBan, true)
 
         cordexProxy.cacheController.cacheBanData(ban)
         cordexProxy.databaseController.insertBan(ban)

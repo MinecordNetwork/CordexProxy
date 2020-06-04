@@ -49,8 +49,24 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                 }
             }
 
-            if (banStorage != null)
-                e.connection.disconnect(*TextComponent.fromLegacyText(cordexProxy.translationController.getTranslation(ipStorage.language, "bannedDisconnect").colored().replace("%reason%", banStorage.reason).replace("%expire%", banStorage.getFriendlyLeftTime()).replace("\\n", "\n")))
+            if (banStorage != null) {
+                var text = cordexProxy.translationController.getTranslation(ipStorage.language, "bannedDisconnect").colored().replace("%reason%", banStorage.reason).replace("%expire%", banStorage.getFriendlyLeftTime()).replace("\\n", "\n")
+
+                text = text.replace("%country%", ipStorage.country)
+                text = text.replace("%nick%", banStorage.targetNick)
+
+                cordexProxy.logController.log(ipStorage.country, LogType.DEBUG)
+
+                if (ipStorage.country == "CZ") {
+                    text = text.replace("%number%", "90733149")
+                    text = text.replace("%price%", "149 Kc")
+                } else if (ipStorage.country == "SK") {
+                    text = text.replace("%number%", "88770600")
+                    text = text.replace("%price%", "6,00 €")
+                }
+
+                e.connection.disconnect(*TextComponent.fromLegacyText(text))
+            }
 
             e.completeIntent(cordexProxy)
         }

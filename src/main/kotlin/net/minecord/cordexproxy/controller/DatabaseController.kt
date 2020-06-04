@@ -119,9 +119,9 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
     internal fun loadBans(): List<BanStorage> {
         val bans = ArrayList<BanStorage>()
         try {
-            val rs = mysql.query("SELECT * FROM `minecraft_ban` WHERE `is_active`='1'")!!.resultSet
+            val rs = mysql.query("SELECT b.*, p.name FROM `minecraft_ban` b JOIN `minecraft_player` p ON b.target_id = p.id WHERE b.`is_active`='1'")!!.resultSet
             while (rs.next())
-                bans.add(BanStorage(rs.getInt("id"), rs.getInt("target_id"), rs.getInt("target_ip"), rs.getInt("admin_id"), rs.getInt("admin_ip"),
+                bans.add(BanStorage(rs.getInt("id"), rs.getInt("target_id"), rs.getString("name"), rs.getInt("target_ip"), rs.getInt("admin_id"), rs.getInt("admin_ip"),
                         rs.getString("reason"), rs.getTimestamp("expire_at"), rs.getBoolean("is_ipban"), rs.getBoolean("is_active")))
             rs.close()
         } catch (e: SQLException) {
@@ -351,9 +351,9 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
         var output: BanStorage? = null
 
         try {
-            val rs = mysql.preparedQuery("SELECT * FROM `minecraft_ban` WHERE `is_active` = 1 AND (`target_id` = ? OR `target_ip` = ?)", placeholders)!!.resultSet
+            val rs = mysql.preparedQuery("SELECT b.*, p.name FROM `minecraft_ban` b JOIN `minecraft_player` p ON b.target_id = p.id WHERE b.`is_active` = 1 AND (b.`target_id` = ? OR b.`target_ip` = ?)", placeholders)!!.resultSet
             if (rs.next())
-                output = BanStorage(rs.getInt("id"), rs.getInt("target_id"), rs.getInt("target_ip"), rs.getInt("admin_id"), rs.getInt("admin_ip"),
+                output = BanStorage(rs.getInt("id"), rs.getInt("target_id"), rs.getString("name"), rs.getInt("target_ip"), rs.getInt("admin_id"), rs.getInt("admin_ip"),
                         rs.getString("reason"), rs.getTimestamp("expire_at"), rs.getBoolean("is_ipban"), rs.getBoolean("is_active"))
             rs.close()
         } catch (e: SQLException) {

@@ -4,7 +4,7 @@ import java.sql.Timestamp
 import java.util.concurrent.TimeUnit
 
 
-class BanStorage(var id: Int, var targetId: Int, var targetIp: Int, var adminId: Int, var adminIp: Int, var reason: String, var expire: Timestamp, var isIpBan: Boolean, var isActive: Boolean) {
+class BanStorage(var id: Int, var targetId: Int, var targetNick: String, var targetIp: Int, var adminId: Int, var adminIp: Int, var reason: String, var expire: Timestamp, var isIpBan: Boolean, var isActive: Boolean) {
     fun getFriendlyLeftTime(): String {
         val seconds = (expire.time - System.currentTimeMillis()) / 1000
 
