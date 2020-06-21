@@ -64,8 +64,8 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
 
         val playerName = cordPlayer.player.name
         val serverName = server.displayName
-        val serverTps = ((server.tps * 1000.0).roundToInt() / 1000.0).toString() + ""
-        val serverPlayers = getPlayers().filter { !it.hidden && it.player.server == proxyServer }.size
+        val serverTps = ((server.tps * 1000.0).roundToInt() / 1000.0).toString()
+        val serverPlayers = getPlayers().filter { !it.hidden && it.player.server.info.name == proxyServer.info.name }.size
         val serverMaxPlayers = server.maxPlayers
         val ping = cordPlayer.player.ping
         val online = getPlayers().filter { !it.hidden }.size
@@ -87,20 +87,20 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
 
         val networkName = cordPlayer.translateMessage("webName")
 
-        val header = motd.firstPayload.replace("%players%", players.size.toString() + "")
+        val header = motd.firstPayload.replace("%players%", players.size.toString())
                 .replace("%serverName%", serverName).replace("%playerName%", playerName)
-                .replace("%serverTps%", serverTps).replace("%serverPlayers%", serverPlayers.toString() + "")
-                .replace("%ping%", ping.toString() + "").replace("%online%", online.toString() + "")
-                .replace("%serverRam%", serverRam.toString() + "").replace("%serverRamMax%", serverRamMax.toString() + "")
-                .replace("%serverMaxPlayers%", serverMaxPlayers.toString() + "").replace("%playersWord%", playersWord).replace("\\n", "\n")
+                .replace("%serverTps%", serverTps).replace("%serverPlayers%", serverPlayers.toString())
+                .replace("%ping%", ping.toString()).replace("%online%", online.toString())
+                .replace("%serverRam%", serverRam.toString()).replace("%serverRamMax%", serverRamMax.toString())
+                .replace("%serverMaxPlayers%", serverMaxPlayers.toString()).replace("%playersWord%", playersWord).replace("\\n", "\n")
                 .replace("%network%", networkName).colored()
 
-        val footer = motd.secondPayload.replace("%players%", players.size.toString() + "")
+        val footer = motd.secondPayload.replace("%players%", players.size.toString())
                 .replace("%serverName%", serverName).replace("%playerName%", playerName)
-                .replace("%serverTps%", serverTps).replace("%serverPlayers%", serverPlayers.toString() + "")
-                .replace("%ping%", ping.toString() + "").replace("%online%", online.toString() + "")
-                .replace("%serverRam%", serverRam.toString() + "").replace("%serverRamMax%", serverRamMax.toString() + "")
-                .replace("%serverMaxPlayers%", serverMaxPlayers.toString() + "").replace("%playersWord%", playersWord).replace("\\n", "\n")
+                .replace("%serverTps%", serverTps).replace("%serverPlayers%", serverPlayers.toString())
+                .replace("%ping%", ping.toString()).replace("%online%", online.toString())
+                .replace("%serverRam%", serverRam.toString()).replace("%serverRamMax%", serverRamMax.toString())
+                .replace("%serverMaxPlayers%", serverMaxPlayers.toString()).replace("%playersWord%", playersWord).replace("\\n", "\n")
                 .replace("%network%", networkName).colored()
 
         cordPlayer.player.setTabHeader(ComponentBuilder(header).create(), ComponentBuilder(footer).create())
