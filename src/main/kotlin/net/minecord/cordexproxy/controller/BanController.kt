@@ -107,10 +107,12 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
                 text = text.replace("%nick%", bannedPlayer.player.name)
 
                 if (ipStorage.country == "CZ") {
-                    text = text.replace("%number%", "90733149")
+                    text = text.replace("%price%", "149")
+                    text = text.replace("%number%", "90733")
                     text = text.replace("%price%", "149 Kc")
                 } else if (ipStorage.country == "SK") {
-                    text = text.replace("%number%", "88770600")
+                    text = text.replace("%price%", "6")
+                    text = text.replace("%number%", "8877")
                     text = text.replace("%price%", "6,00 €")
                 }
 
