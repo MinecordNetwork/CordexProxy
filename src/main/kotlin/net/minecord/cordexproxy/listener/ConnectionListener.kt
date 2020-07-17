@@ -31,18 +31,25 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             val ipStorage = cordexProxy.cacheController.getIpData(e.connection.address.address.hostAddress)
             val playerStorage = cordexProxy.cacheController.getPlayerData(e.connection.uniqueId)
             var banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, null)
-            if (playerStorage != null) {
-                banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, playerStorage.id)
 
-                if (Inet4Address.getLocalHost().hostAddress.startsWith("82.208")) {
-                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lProsim pripoj se pres nasi novou IP adresu\n\n&fNase nova IP adresa: &emc.minecord.cz".colored()))
+            if (Inet4Address.getLocalHost().hostAddress.startsWith("82.208")) {
+                e.connection.disconnect(*TextComponent.fromLegacyText("&b&lProsim pripoj se pres nasi novou IP adresu\n\n&fNase nova IP adresa: &emc.minecord.cz".colored()))
+            }
+
+            if (playerStorage != null) {
+                if (ipStorage.country != "CZ" && ipStorage.country != "SK" && playerStorage.playedTime < 1000) {
+                    e.connection.disconnect(*TextComponent.fromLegacyText("BYE"))
                 }
+
+                banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, playerStorage.id)
 
                 if (cordexProxy.cacheController.getConfigValue("whitelist").asBoolean() && !playerStorage.isWhitelisted && !playerStorage.rank.isAdmin) {
                     val firstLine = cordexProxy.translationController.getTranslation(ipStorage.language, "maintenanceMotdFirstLine").colored()
                     val secondLine = cordexProxy.translationController.getTranslation(ipStorage.language, "maintenanceMotdSecondLine").colored()
                     e.connection.disconnect(*TextComponent.fromLegacyText((firstLine + "\n\n" + secondLine).colored()))
                 }
+            } else if (ipStorage.country != "CZ" && ipStorage.country != "SK") {
+                //e.connection.disconnect(*TextComponent.fromLegacyText("Easy bot attack protection"))
             }
 
             if (banStorage != null) {
