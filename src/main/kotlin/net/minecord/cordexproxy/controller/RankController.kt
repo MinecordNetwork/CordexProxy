@@ -19,7 +19,7 @@ class RankController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         ranks[5] = RankStorage("Trainee", "trainee.global", "&6&l", ChatColor.GOLD)
         ranks[6] = RankStorage("Streamer", "streamer.global", "&a&l", ChatColor.AQUA)
         ranks[7] = RankStorage("VIP", "premium.global", "&a&l", ChatColor.GREEN)
-        ranks[8] = RankStorage("Member", "default.global", "&9&l", ChatColor.BLUE)
+        ranks[8] = RankStorage("Member", "default.global", "&#447eff&l", ChatColor.BLUE)
 
         cordexProxy.logController.log("RankController &b| &7Loaded &a${ranks.size} &7ranks", LogType.INFO)
     }

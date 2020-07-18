@@ -2,9 +2,53 @@ package net.minecord.cordexproxy.util
 
 import net.md_5.bungee.api.ChatColor
 import net.minecord.cordexproxy.model.controller.chat.DefaultFontInfo
+import java.awt.Color
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
+private val REPLACE_ALL_RGB_PATTERN: Pattern = Pattern.compile("(&)?&#([0-9a-fA-F]{6})")
 
 fun String.colored(colorChar: Char = '&'): String {
-    return ChatColor.translateAlternateColorCodes(colorChar, this)
+    val rgbBuilder = StringBuffer()
+    val rgbMatcher: Matcher = REPLACE_ALL_RGB_PATTERN.matcher(this)
+
+    while (rgbMatcher.find()) {
+        val isEscaped = rgbMatcher.group(1) != null
+        if (!isEscaped) {
+            try {
+                val hexCode: String = rgbMatcher.group(2)
+                rgbMatcher.appendReplacement(rgbBuilder, parseHexColor(hexCode))
+                continue
+            } catch (ignored: NumberFormatException) {
+            }
+        }
+        rgbMatcher.appendReplacement(rgbBuilder, "&#$2")
+    }
+
+    rgbMatcher.appendTail(rgbBuilder)
+
+    return ChatColor.translateAlternateColorCodes(colorChar, rgbBuilder.toString())
+}
+
+private fun parseHexColor(hexColor: String): String? {
+    var color = hexColor
+
+    if (color.startsWith("#")) {
+        color = color.substring(1)
+    }
+    if (color.length != 6) {
+        throw NumberFormatException("Invalid hex length")
+    }
+
+    Color.decode("#$hexColor")
+
+    val assembledColorCode = StringBuilder()
+    assembledColorCode.append("\u00a7x")
+    for (curChar in hexColor.toCharArray()) {
+        assembledColorCode.append("\u00a7").append(curChar)
+    }
+
+    return assembledColorCode.toString()
 }
 
 fun String.centerMessage(center_pixel: Int): String {
