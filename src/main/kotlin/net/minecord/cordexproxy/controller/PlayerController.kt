@@ -87,21 +87,18 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
 
         val networkName = cordPlayer.translateMessage("webName")
 
-        val header = motd.firstPayload.replace("%players%", players.size.toString())
-                .replace("%serverName%", serverName).replace("%playerName%", playerName)
-                .replace("%serverTps%", serverTps).replace("%serverPlayers%", serverPlayers.toString())
-                .replace("%ping%", ping.toString()).replace("%online%", online.toString())
-                .replace("%serverRam%", serverRam.toString()).replace("%serverRamMax%", serverRamMax.toString())
-                .replace("%serverMaxPlayers%", serverMaxPlayers.toString()).replace("%playersWord%", playersWord).replace("\\n", "\n")
-                .replace("%network%", networkName).colored()
+        val replacePlaceholders = fun (message: String): String {
+            return message.replace("%players%", players.size.toString())
+                    .replace("%serverName%", serverName).replace("%playerName%", playerName)
+                    .replace("%serverTps%", serverTps).replace("%serverPlayers%", serverPlayers.toString())
+                    .replace("%ping%", ping.toString()).replace("%online%", online.toString())
+                    .replace("%serverRam%", serverRam.toString()).replace("%serverRamMax%", serverRamMax.toString())
+                    .replace("%serverMaxPlayers%", serverMaxPlayers.toString()).replace("%playersWord%", playersWord).replace("\\n", "\n")
+                    .replace("%network%", networkName)
+        }
 
-        val footer = motd.secondPayload.replace("%players%", players.size.toString())
-                .replace("%serverName%", serverName).replace("%playerName%", playerName)
-                .replace("%serverTps%", serverTps).replace("%serverPlayers%", serverPlayers.toString())
-                .replace("%ping%", ping.toString()).replace("%online%", online.toString())
-                .replace("%serverRam%", serverRam.toString()).replace("%serverRamMax%", serverRamMax.toString())
-                .replace("%serverMaxPlayers%", serverMaxPlayers.toString()).replace("%playersWord%", playersWord).replace("\\n", "\n")
-                .replace("%network%", networkName).colored()
+        val header = replacePlaceholders(motd.firstPayload).colored()
+        val footer = replacePlaceholders(motd.secondPayload).colored()
 
         cordPlayer.player.setTabHeader(ComponentBuilder(header).create(), ComponentBuilder(footer).create())
     }
