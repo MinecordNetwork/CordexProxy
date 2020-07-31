@@ -88,7 +88,7 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         val networkName = cordPlayer.translateMessage("webName")
 
         val replacePlaceholders = fun (message: String): String {
-            return message.replace("%players%", players.size.toString())
+            return message.replace("%players%", online.toString())
                     .replace("%serverName%", serverName).replace("%playerName%", playerName)
                     .replace("%serverTps%", serverTps).replace("%serverPlayers%", serverPlayers.toString())
                     .replace("%ping%", ping.toString()).replace("%online%", online.toString())
