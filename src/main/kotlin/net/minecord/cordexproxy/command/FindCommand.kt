@@ -58,7 +58,7 @@ class FindCommand(cordexProxy: CordexProxy, name: String, permission: String, va
         if (cordPlayer != null) {
             val placeholders = HashMap<String, String>()
 
-            placeholders["%rcolor%"] = cordTarget.rank.chatColor.toString()
+            placeholders["%rcolor%"] = cordTarget.rank.stringColor
             placeholders["%player%"] = target.name
             placeholders["%server%"] = serverTarget.displayName
             placeholders["%prefix%"] = cordexProxy.chatController.getPrefix("find")

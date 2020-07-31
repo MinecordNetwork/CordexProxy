@@ -118,7 +118,7 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
             players[player.uniqueId] = cordPlayer
             cordexProxy.databaseController.updateLastJoin(cordPlayer)
 
-            cordexProxy.logController.log("&fPlayer " + cordPlayer.rank.chatColor + player.name + " &fjust &aconnected &fto server", LogType.COLLECTOR)
+            cordexProxy.logController.log("&fPlayer " + cordPlayer.rank.stringColor + player.name + " &fjust &aconnected &fto server", LogType.COLLECTOR)
         }
     }
 
@@ -130,7 +130,7 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
     fun removePlayer(player: ProxiedPlayer) {
         val cordPlayer = getPlayer(player)
 
-        cordexProxy.logController.log("&fPlayer " + cordPlayer.rank.chatColor + player.name + " &fjust &cleft &fthe server", LogType.COLLECTOR)
+        cordexProxy.logController.log("&fPlayer " + cordPlayer.rank.stringColor + player.name + " &fjust &cleft &fthe server", LogType.COLLECTOR)
 
         cordexProxy.proxy.scheduler.schedule(cordexProxy, { cordexProxy.databaseController.updateQuitInfo(cordPlayer) }, 1, TimeUnit.SECONDS)
 

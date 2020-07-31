@@ -64,7 +64,7 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         var bannedPlayer: CordPlayer? = null
         try {
             bannedPlayer = cordexProxy.playerController.getPlayerByUniqueId(target.uuid)
-            placeholders["%tcolor%"] = bannedPlayer.rank.chatColor.toString() + ""
+            placeholders["%tcolor%"] = bannedPlayer.rank.stringColor + ""
             val bannedTitle = BungeeTitle()
             bannedTitle.title(*TextComponent.fromLegacyText(bannedPlayer.translateMessage("bannedTitle").colored()))
             bannedTitle.subTitle(*TextComponent.fromLegacyText(bannedPlayer.translateMessage("bannedSubTitle").replace("%reason%", reason).colored()))
@@ -130,7 +130,7 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         val expire = Timestamp(System.currentTimeMillis() + seconds * 1000)
         val networkName = target.translateMessage("serverName")
 
-        placeholders["%tcolor%"] = target.rank.chatColor.toString() + ""
+        placeholders["%tcolor%"] = target.rank.stringColor + ""
         placeholders["%target%"] = target.data.name
         placeholders["%reason%"] = reason
 
@@ -167,7 +167,7 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
     private fun createPlaceholders(target: CordPlayer, reason: String): HashMap<String, String> {
         val placeholders = hashMapOf<String, String>()
 
-        placeholders["%tcolor%"] = target.rank.chatColor.toString() + ""
+        placeholders["%tcolor%"] = target.rank.stringColor + ""
         placeholders["%target%"] = target.data.name
         placeholders["%reason%"] = reason
 

@@ -29,7 +29,7 @@ class VoteListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
         if (player != null) {
             val cordPlayer = cordexProxy.playerController.getPlayer(player)
             placeholders["%player%"] = cordPlayer.player.name + ""
-            placeholders["%rcolor%"] = cordPlayer.rank.chatColor.toString() + ""
+            placeholders["%rcolor%"] = cordPlayer.rank.stringColor + ""
             cordexProxy.databaseController.insertVote(cordPlayer.data.id, service)
         } else {
             placeholders["%player%"] = vote.username
