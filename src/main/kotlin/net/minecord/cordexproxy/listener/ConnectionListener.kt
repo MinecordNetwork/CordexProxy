@@ -37,9 +37,9 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             }
 
             if (playerStorage != null) {
-                if (ipStorage.country != "CZ" && ipStorage.country != "SK" && playerStorage.playedTime < 1000) {
+                /*if (ipStorage.country != "CZ" && ipStorage.country != "SK" && playerStorage.playedTime < 1000) {
                     e.connection.disconnect(*TextComponent.fromLegacyText("BYE"))
-                }
+                }*/
 
                 banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, playerStorage.id)
 
