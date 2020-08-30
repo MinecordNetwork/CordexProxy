@@ -278,6 +278,52 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
         return ipStorage
     }
 
+    fun getBanCount(playerId: Int): Int {
+        val placeholders = ArrayList(listOf(playerId.toString()))
+        var banCount = 0
+
+        try {
+            val rs = mysql.preparedQuery("SELECT COUNT(id) as ban_count FROM `minecraft_ban` WHERE player_id = ?", placeholders)!!.resultSet
+            if (rs.next())
+                banCount = rs.getInt("ban_count")
+            rs.close()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+
+        return banCount
+    }
+
+    /**
+     * Finds out if player is able to report some player
+     *
+     * @return False if last report was before less than 10 mins
+     */
+    fun isAbleToReportPlayer(playerId: Int): Boolean {
+        val placeholders = ArrayList(listOf(playerId.toString() + ""))
+        var isAble = true
+
+        try {
+            val rs = mysql.preparedQuery("SELECT * FROM `minecraft_report` WHERE reporter_id = ? AND created_at > date_sub(now(), interval 10 minute)", placeholders)!!.resultSet
+            if (rs.next())
+                isAble = false
+            rs.close()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+
+        return isAble
+    }
+
+    /**
+     * Reports the player with reason
+     */
+    fun reportPlayer(targetId: Int, reporterId: Int, reason: String) {
+        val placeholders = ArrayList(listOf(targetId.toString() + "", reporterId.toString() + "", reason))
+
+        mysql.preparedQuery("INSERT INTO `minecraft_report` (`target_id`, `reporter_id`, `reason`) VALUES (?, ?, ?)", placeholders)
+    }
+
     /**
      * Caches config values from database to memory
      *

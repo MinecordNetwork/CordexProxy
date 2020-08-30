@@ -96,6 +96,7 @@ class CordexProxy : Plugin() {
         proxy.pluginManager.registerCommand(this, FindCommand(this, "find", "default.global"))
         proxy.pluginManager.registerCommand(this, ProxyCommand(this, "proxy", "cordex.proxy"))
         proxy.pluginManager.registerCommand(this, WhoIsCommand(this, "whois", "cordex.whois"))
+        proxy.pluginManager.registerCommand(this, ReportCommand(this, "report", "default.global", cfg.getString("webhook")))
     }
 
     override fun onDisable() {

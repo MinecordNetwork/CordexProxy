@@ -11,6 +11,7 @@ version '0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
+    jcenter()
     mavenCentral()
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
@@ -26,6 +27,7 @@ dependencies {
     compileOnly 'com.vexsoftware:nuvotifier-bungeecord:2.3.4'
     compileOnly 'eu.haelexuis:bungateway:1.0'
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    compile 'club.minnced:discord-webhooks:0.4.0'
 }
 
 jar {
