@@ -11,15 +11,15 @@ class RankController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
     private val ranks = HashMap<Int, RankStorage>()
 
     init {
-        ranks[0] = RankStorage("Owner", "owner.global", "&c", ChatColor.RED)
-        ranks[2] = RankStorage("Developer", "developer.global", "&c", ChatColor.RED)
-        ranks[1] = RankStorage("Admin", "admin.global", "&c", ChatColor.RED)
-        ranks[3] = RankStorage("Builder", "builder.global", "&c", ChatColor.RED)
-        ranks[4] = RankStorage("Support", "support.global", "&c", ChatColor.RED)
-        ranks[5] = RankStorage("Trainee", "trainee.global", "&c", ChatColor.RED)
-        ranks[6] = RankStorage("Streamer", "streamer.global", "&a", ChatColor.AQUA)
-        ranks[7] = RankStorage("VIP", "premium.global", "&a", ChatColor.GREEN)
-        ranks[8] = RankStorage("Member", "default.global", "&#447eff", ChatColor.BLUE)
+        ranks[0] = RankStorage("Owner", "owner.global", "&c", ChatColor.RED, 0xFB5454)
+        ranks[2] = RankStorage("Developer", "developer.global", "&c", ChatColor.RED, 0xFB5454)
+        ranks[1] = RankStorage("Admin", "admin.global", "&c", ChatColor.RED, 0xFB5454)
+        ranks[3] = RankStorage("Builder", "builder.global", "&c", ChatColor.RED, 0xFB5454)
+        ranks[4] = RankStorage("Support", "support.global", "&c", ChatColor.RED, 0xFB5454)
+        ranks[5] = RankStorage("Trainee", "trainee.global", "&c", ChatColor.RED, 0xFB5454)
+        ranks[6] = RankStorage("Streamer", "streamer.global", "&a", ChatColor.AQUA, 0xFB5454)
+        ranks[7] = RankStorage("VIP", "premium.global", "&a", ChatColor.GREEN, 0x54FB54)
+        ranks[8] = RankStorage("Member", "default.global", "&#447eff", ChatColor.BLUE, 0x437DFB)
 
         cordexProxy.logController.log("RankController &b| &7Loaded &a${ranks.size} &7ranks", LogType.INFO)
     }
@@ -35,7 +35,7 @@ class RankController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
             if (player.hasPermission(value.basicPermission))
                 return value
         }
-        return RankStorage("Member", "default.global", "&9&l", ChatColor.BLUE)
+        return RankStorage("Member", "default.global", "&9&l", ChatColor.BLUE, 0x437DFB)
     }
 
     /**

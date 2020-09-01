@@ -14,6 +14,7 @@ class CordPlayer(private val cordexProxy: CordexProxy, val player: ProxiedPlayer
     val rank: RankStorage
     val language: LanguageType
     var hidden = false
+    var lastMessages = arrayListOf<String>()
 
     init {
         val ipData = cordexProxy.cacheController.getIpData(data.lastIpAddress)

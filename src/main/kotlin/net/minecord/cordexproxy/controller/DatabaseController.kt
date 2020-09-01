@@ -283,7 +283,7 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
         var banCount = 0
 
         try {
-            val rs = mysql.preparedQuery("SELECT COUNT(id) as ban_count FROM `minecraft_ban` WHERE player_id = ?", placeholders)!!.resultSet
+            val rs = mysql.preparedQuery("SELECT COUNT(id) as ban_count FROM `minecraft_ban` WHERE target_id = ?", placeholders)!!.resultSet
             if (rs.next())
                 banCount = rs.getInt("ban_count")
             rs.close()
@@ -292,6 +292,38 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
         }
 
         return banCount
+    }
+
+    fun getReportCount(playerId: Int): Int {
+        val placeholders = ArrayList(listOf(playerId.toString()))
+        var reportCount = 0
+
+        try {
+            val rs = mysql.preparedQuery("SELECT COUNT(id) as report_count FROM `minecraft_report` WHERE target_id = ?", placeholders)!!.resultSet
+            if (rs.next())
+                reportCount = rs.getInt("report_count")
+            rs.close()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+
+        return reportCount
+    }
+
+    fun getReportCountInLastTenMinutes(playerId: Int): Int {
+        val placeholders = ArrayList(listOf(playerId.toString()))
+        var reportCount = 0
+
+        try {
+            val rs = mysql.preparedQuery("SELECT COUNT(id) as report_count FROM `minecraft_report` WHERE target_id = ? AND created_at > NOW() - INTERVAL 10 MINUTE", placeholders)!!.resultSet
+            if (rs.next())
+                reportCount = rs.getInt("report_count")
+            rs.close()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+
+        return reportCount
     }
 
     /**

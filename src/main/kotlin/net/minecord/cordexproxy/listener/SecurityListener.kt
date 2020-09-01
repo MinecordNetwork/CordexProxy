@@ -1,9 +1,13 @@
 package net.minecord.cordexproxy.listener
 
-import net.minecord.cordexproxy.CordexProxy
+import net.md_5.bungee.api.ChatColor
 import net.md_5.bungee.api.connection.ProxiedPlayer
 import net.md_5.bungee.api.event.ChatEvent
 import net.md_5.bungee.event.EventHandler
+import net.minecord.cordexproxy.CordexProxy
+import net.minecord.cordexproxy.util.colored
+import java.util.*
+
 
 class SecurityListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler
@@ -19,6 +23,14 @@ class SecurityListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                 cordPlayer.sendMessage("banlist", cordPlayer.translateMessage("muteChatTry"))
                 e.isCancelled = true
                 return
+            } else {
+                /*val rightNow = Calendar.getInstance()
+                val hour = rightNow[Calendar.HOUR_OF_DAY]
+                val minute = rightNow[Calendar.MINUTE]*/
+                cordPlayer.lastMessages.add(ChatColor.stripColor(command.colored()))
+                if (cordPlayer.lastMessages.size > 10) {
+                    cordPlayer.lastMessages.removeAt(0)
+                }
             }
         }
 
