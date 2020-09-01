@@ -79,7 +79,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
 
         val embed = WebhookEmbedBuilder()
                 .setColor(target.rank.integerColor)
-                .setAuthor(WebhookEmbed.EmbedAuthor(cordPlayer.player.name, "https://minotar.net/helm/" + target.name + "/96", null))
+                .setAuthor(WebhookEmbed.EmbedAuthor(target.name, "https://minotar.net/helm/" + target.name + "/96", null))
                 .setDescription("""
                         Playtime: ${target.getFormattedPlayedTime(true)}
                         Current IP address: **""" + target.lastIpAddress + "**" +
