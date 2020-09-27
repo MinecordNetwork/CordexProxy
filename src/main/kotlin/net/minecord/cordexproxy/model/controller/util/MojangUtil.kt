@@ -11,7 +11,7 @@ class MojangUtil(private val utilController: UtilController) {
         var link: String? = null
 
         try {
-            link = utilController.webUtil.readWebsite("http://fastapi.minecord.net/mojang/hasPaid.php?nick=$name", 4)
+            link = utilController.webUtil.readWebsite("http://minecord.craftlist.org/mojang/hasPaid.php?nick=$name", 4)
         } catch (e: MalformedURLException) {
             e.printStackTrace()
         }
