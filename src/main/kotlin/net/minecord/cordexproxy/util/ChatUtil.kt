@@ -2,7 +2,6 @@ package net.minecord.cordexproxy.util
 
 import net.md_5.bungee.api.ChatColor
 import net.minecord.cordexproxy.model.controller.chat.DefaultFontInfo
-import java.awt.Color
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -17,7 +16,7 @@ fun String.colored(colorChar: Char = '&'): String {
         if (!isEscaped) {
             try {
                 val hexCode: String = rgbMatcher.group(2)
-                rgbMatcher.appendReplacement(rgbBuilder, parseHexColor(hexCode))
+                rgbMatcher.appendReplacement(rgbBuilder, ChatColor.of(parseHexColor(hexCode)).toString())
                 continue
             } catch (ignored: NumberFormatException) {
             }
@@ -33,22 +32,15 @@ fun String.colored(colorChar: Char = '&'): String {
 private fun parseHexColor(hexColor: String): String? {
     var color = hexColor
 
-    if (color.startsWith("#")) {
-        color = color.substring(1)
-    }
-    if (color.length != 6) {
-        throw NumberFormatException("Invalid hex length")
+    if (!color.startsWith("#")) {
+        color = "#$color"
     }
 
-    Color.decode("#$hexColor")
-
-    val assembledColorCode = StringBuilder()
-    assembledColorCode.append("\u00a7x")
-    for (curChar in hexColor.toCharArray()) {
-        assembledColorCode.append("\u00a7").append(curChar)
+    if (color.length != 7) {
+        return "#FFFFFF"
     }
 
-    return assembledColorCode.toString()
+    return color
 }
 
 fun String.centerMessage(center_pixel: Int): String {

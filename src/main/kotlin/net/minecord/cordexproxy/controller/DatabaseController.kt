@@ -255,7 +255,7 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
             } else {
                 var jsonText: String? = null
                 try {
-                    jsonText = cordexProxy.utilController.webUtil.readWebsite("http://minecord.craftlist.org/haelexuis/ipCache.php?ip=$ip", 6)
+                    jsonText = cordexProxy.utilController.webUtil.readWebsite("http://172.17.0.1/haelexuis/ipCache.php?ip=$ip", 6)
                 } catch (e: MalformedURLException) {
                     e.printStackTrace()
                 }

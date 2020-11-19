@@ -12,8 +12,8 @@ class RankController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
 
     init {
         ranks[0] = RankStorage("Owner", "owner.global", "&c", ChatColor.RED, 0xFB5454)
-        ranks[2] = RankStorage("Developer", "developer.global", "&c", ChatColor.RED, 0xFB5454)
-        ranks[1] = RankStorage("Admin", "admin.global", "&c", ChatColor.RED, 0xFB5454)
+        ranks[1] = RankStorage("Developer", "developer.global", "&c", ChatColor.RED, 0xFB5454)
+        ranks[2] = RankStorage("Admin", "admin.global", "&c", ChatColor.RED, 0xFB5454)
         ranks[3] = RankStorage("Builder", "builder.global", "&c", ChatColor.RED, 0xFB5454)
         ranks[4] = RankStorage("Support", "support.global", "&c", ChatColor.RED, 0xFB5454)
         ranks[5] = RankStorage("Trainee", "trainee.global", "&c", ChatColor.RED, 0xFB5454)
@@ -50,7 +50,7 @@ class RankController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
                 return value
         }
 
-        return ranks[8] ?: throw NullPointerException()
+        return ranks[8]!!
     }
 
     /**
