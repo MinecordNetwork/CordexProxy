@@ -33,7 +33,7 @@ class VoteListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             cordexProxy.databaseController.insertVote(cordPlayer.data.id, service)
         } else {
             placeholders["%player%"] = vote.username
-            placeholders["%rcolor%"] = "&9"
+            placeholders["%rcolor%"] = "&#447eff"
             val data = cordexProxy.databaseController.loadPlayerData(vote.username)
             if (data != null) {
                 cordexProxy.databaseController.insertVote(data.id, service)
