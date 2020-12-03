@@ -6,8 +6,6 @@ import net.md_5.bungee.api.event.ChatEvent
 import net.md_5.bungee.event.EventHandler
 import net.minecord.cordexproxy.CordexProxy
 import net.minecord.cordexproxy.util.colored
-import java.util.*
-
 
 class SecurityListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler
@@ -17,7 +15,7 @@ class SecurityListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             return
 
         val cordPlayer = cordexProxy.playerController.getPlayer(e.sender as ProxiedPlayer)
-        if (!command.startsWith("/")) {
+        if (!command.startsWith("/") || command.startsWith("/afk ")) {
             val isMuted = cordexProxy.banController.isMuted(cordPlayer)
             if (isMuted) {
                 cordPlayer.sendMessage("banlist", cordPlayer.translateMessage("muteChatTry"))
