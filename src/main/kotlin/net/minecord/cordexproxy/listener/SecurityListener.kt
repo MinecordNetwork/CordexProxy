@@ -16,7 +16,7 @@ class SecurityListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
 
         val cordPlayer = cordexProxy.playerController.getPlayer(e.sender as ProxiedPlayer)
         if (!command.startsWith("/") || command.startsWith("/afk ")) {
-            val isMuted = cordexProxy.banController.isMuted(cordPlayer)
+            val isMuted = cordexProxy.banController.isMuted(cordPlayer.player.uniqueId)
             if (isMuted) {
                 cordPlayer.sendMessage("banlist", cordPlayer.translateMessage("muteChatTry"))
                 e.isCancelled = true

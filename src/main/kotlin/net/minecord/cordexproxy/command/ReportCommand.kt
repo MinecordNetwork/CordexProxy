@@ -103,7 +103,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
                 .replace("%player%", args[0])
                 .replace("%rcolor%", target.rank.stringColor))
 
-        if (targetPlayer != null && reason.toString().toLowerCase().contains("spam", true) && !cordexProxy.banController.isMuted(targetPlayer)) {
+        if (targetPlayer != null && reason.toString().toLowerCase().contains("spam", true) && !cordexProxy.banController.isMuted(targetPlayer.player.uniqueId)) {
             val spamNumber = 3
             val muteMinutes = 20
             val reportsNeeded = 3

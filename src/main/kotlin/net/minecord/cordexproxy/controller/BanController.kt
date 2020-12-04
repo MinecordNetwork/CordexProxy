@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
-    private val mutedPlayers = ConcurrentHashMap<UUID, MuteStorage>()
+    val mutedPlayers = ConcurrentHashMap<UUID, MuteStorage>()
 
     init {
         cordexProxy.proxy.scheduler.schedule(cordexProxy, {
@@ -144,8 +144,12 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         title.send(target.player)
     }
 
-    fun isMuted(cordPlayer: CordPlayer): Boolean {
-        return mutedPlayers.containsKey(cordPlayer.data.uuid)
+    fun unmutePlayer(uniqueId: UUID) {
+        mutedPlayers.remove(uniqueId)
+    }
+
+    fun isMuted(uniqueId: UUID): Boolean {
+        return mutedPlayers.containsKey(uniqueId)
     }
 
     fun kickPlayer(target: CordPlayer, reason: String) {

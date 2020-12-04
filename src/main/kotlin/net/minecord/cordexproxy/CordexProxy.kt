@@ -93,6 +93,7 @@ class CordexProxy : Plugin() {
         proxy.pluginManager.registerCommand(this, KickCommand(this, "kick", "cordex.kick"))
         proxy.pluginManager.registerCommand(this, WarnCommand(this, "warn", "cordex.warn"))
         proxy.pluginManager.registerCommand(this, MuteCommand(this, "mute", "cordex.mute"))
+        proxy.pluginManager.registerCommand(this, UnmuteCommand(this, "unmute", "cordex.mute"))
         proxy.pluginManager.registerCommand(this, FindCommand(this, "find", "default.global"))
         proxy.pluginManager.registerCommand(this, ProxyCommand(this, "proxy", "cordex.proxy"))
         proxy.pluginManager.registerCommand(this, WhoIsCommand(this, "whois", "cordex.whois"))
