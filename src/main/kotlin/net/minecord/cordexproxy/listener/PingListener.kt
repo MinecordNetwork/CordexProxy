@@ -83,11 +83,11 @@ class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             event.response.players.online = Random.nextInt(1000)
 
             try {
-                if (ipData.country == "SK" || ipData.country == "CZ") {
+                /*if (ipData.country == "SK" || ipData.country == "CZ") {
                     event.response.setFavicon(Favicon.create(ImageIO.read(File("ban-icon-sms_${ipData.country}.png"))))
-                } else {
+                } else {*/
                     event.response.setFavicon(Favicon.create(ImageIO.read(File("ban-icon.png"))))
-                }
+               /*}*/
             } catch (e: IOException) {
                 e.printStackTrace()
             }
