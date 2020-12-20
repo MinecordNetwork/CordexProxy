@@ -116,11 +116,11 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
 
             for (message in targetPlayer.lastMessages) {
                 if (Collections.frequency(targetPlayer.lastMessages, message) >= spamNumber) {
-                    cordexProxy.banController.mutePlayer(targetPlayer, reason.toString(), 60 * muteMinutes)
+                    cordexProxy.banController.mutePlayer(targetPlayer, reason.toString().capitalize(), 60 * muteMinutes)
                     targetPlayer.lastMessages.clear()
                     prepareMessage()
                     messageBuilder.setContent(
-                            "Hrac **${target.name}** byl umlcen za **Spam** na **$muteMinutes minut**" +
+                            "Hrac **${target.name}** byl umlcen za **${reason.toString().capitalize()}** na **$muteMinutes minut**" +
                                     "\nSpamoval ${spamNumber}x text *$message*"
                     )
                     client.send(messageBuilder.build())
