@@ -158,7 +158,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
                         list.add(player.player.name)
                 }
                 2 -> {
-                    val reasons = listOf("Spam", "Swearing", "Insulting", "Griefing", "Cheating")
+                    val reasons = listOf("Spam", "Swearing", "Insulting", "Griefing", "Cheating", "Multiaccount", "TeleportKill")
                     for (reason in reasons) {
                         if (reason.startsWith(args[1], true))
                             list.add(reason)
