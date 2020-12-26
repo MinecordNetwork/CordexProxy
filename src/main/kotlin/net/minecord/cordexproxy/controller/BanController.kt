@@ -71,7 +71,7 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
             bannedTitle.stay(60)
             bannedTitle.send(bannedPlayer.player)
         } catch (e: NullPointerException) {
-            placeholders["%tcolor%"] = "&9"
+            placeholders["%tcolor%"] = "&#447eff"
         }
 
         var adminId = 0
