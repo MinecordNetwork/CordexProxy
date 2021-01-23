@@ -27,6 +27,10 @@ class PlayerListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     fun onServerChange(e: ServerConnectEvent) {
         val cordPlayer = cordexProxy.playerController.getPlayer(e.player)
 
+        if (!cordexProxy.databaseController.isLogged(cordPlayer.data.id)) {
+            e.isCancelled = true
+        }
+
         if (cordPlayer.data.connectTime!!.time < System.currentTimeMillis() - 2000) {
             val server = cordexProxy.serverController.getServer(e.target.name)
 
