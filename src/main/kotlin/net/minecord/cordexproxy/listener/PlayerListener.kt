@@ -25,18 +25,20 @@ class PlayerListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
 
     @EventHandler
     fun onServerChange(e: ServerConnectEvent) {
+        if (e.reason == ServerConnectEvent.Reason.JOIN_PROXY) {
+            return
+        }
+
         val cordPlayer = cordexProxy.playerController.getPlayer(e.player)
 
         if (!cordexProxy.databaseController.isLogged(cordPlayer.data.id)) {
             e.isCancelled = true
         } else {
-            if (cordPlayer.data.connectTime!!.time < System.currentTimeMillis() - 2000) {
-                val server = cordexProxy.serverController.getServer(e.target.name)
+            val server = cordexProxy.serverController.getServer(e.target.name)
 
-                val placeholders = HashMap<String, String>()
-                placeholders["%server%"] = server.displayName
-                cordPlayer.sendMessage("system", cordPlayer.translateMessage("connectingToServer"), placeholders)
-            }
+            val placeholders = HashMap<String, String>()
+            placeholders["%server%"] = server.displayName
+            cordPlayer.sendMessage("system", cordPlayer.translateMessage("connectingToServer"), placeholders)
         }
     }
 }
