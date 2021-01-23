@@ -29,14 +29,14 @@ class PlayerListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
 
         if (!cordexProxy.databaseController.isLogged(cordPlayer.data.id)) {
             e.isCancelled = true
-        }
+        } else {
+            if (cordPlayer.data.connectTime!!.time < System.currentTimeMillis() - 2000) {
+                val server = cordexProxy.serverController.getServer(e.target.name)
 
-        if (cordPlayer.data.connectTime!!.time < System.currentTimeMillis() - 2000) {
-            val server = cordexProxy.serverController.getServer(e.target.name)
-
-            val placeholders = HashMap<String, String>()
-            placeholders["%server%"] = server.displayName
-            cordPlayer.sendMessage("system", cordPlayer.translateMessage("connectingToServer"), placeholders)
+                val placeholders = HashMap<String, String>()
+                placeholders["%server%"] = server.displayName
+                cordPlayer.sendMessage("system", cordPlayer.translateMessage("connectingToServer"), placeholders)
+            }
         }
     }
 }

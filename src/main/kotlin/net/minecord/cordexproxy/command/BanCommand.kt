@@ -62,7 +62,7 @@ class BanCommand(cordexProxy: CordexProxy, name: String, permission: String, var
                         list.add(player.name)
                 }
                 args.size == 2 -> {
-                    val reasons = listOf("Cheating", "Flyhack", "Bugging", "Insulting", "Swearing", "Griefing", "Advertisement", "Spam", "Stupidity", "Multiaccount", "TeleportKill", "Bugging")
+                    val reasons = listOf("Cheating", "Flyhack", "Bugging", "Insulting", "Swearing", "Griefing", "Advertisement", "Spam", "Stupidity", "Multiaccount", "TeleportKill")
                     for (reason in reasons) {
                         if (reason.startsWith(args[1], true))
                             list.add(reason)
