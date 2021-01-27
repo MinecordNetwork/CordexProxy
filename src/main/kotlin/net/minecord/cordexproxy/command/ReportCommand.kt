@@ -39,14 +39,9 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
             return
         }
 
-        var reason = java.lang.StringBuilder()
-        for (i in 1 until args.size) {
-            reason.append(args[i]).append(" ")
-        }
+        val reason = args.drop(1).joinToString(" ")
 
-        reason = StringBuilder(reason.substring(0, reason.length - 1))
-
-        cordexProxy.databaseController.reportPlayer(target.id, cordPlayer.data.id, reason.toString())
+        cordexProxy.databaseController.reportPlayer(target.id, cordPlayer.data.id, reason)
 
         val builder = WebhookClientBuilder(webHook)
 
@@ -64,7 +59,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
 
         var targetPlayer: CordPlayer? = null
         var lastMessages = ""
-        if (!listOf("Cheating", "Griefing", "Fly", "Bugging").contains(reason.toString())) {
+        if (!listOf("Cheating", "Griefing", "Fly", "Bugging").contains(reason)) {
             try {
                 targetPlayer = cordexProxy.playerController.getPlayerByUniqueId(target.uuid)
                 if (targetPlayer.lastMessages.isNotEmpty()) {
@@ -103,7 +98,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
                 .replace("%player%", args[0])
                 .replace("%rcolor%", target.rank.stringColor))
 
-        if (targetPlayer != null && reason.toString().toLowerCase().contains("spam", true) && !cordexProxy.banController.isMuted(targetPlayer.player.uniqueId)) {
+        if (targetPlayer != null && reason.toLowerCase().contains("spam", true) && !cordexProxy.banController.isMuted(targetPlayer.player.uniqueId)) {
             val spamNumber = 3
             val muteMinutes = 20
             val reportsNeeded = 3
@@ -116,11 +111,11 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
 
             for (message in targetPlayer.lastMessages) {
                 if (Collections.frequency(targetPlayer.lastMessages, message) >= spamNumber) {
-                    cordexProxy.banController.mutePlayer(targetPlayer, reason.toString().capitalize(), 60 * muteMinutes)
+                    cordexProxy.banController.mutePlayer(targetPlayer, reason.capitalize(), 60 * muteMinutes)
                     targetPlayer.lastMessages.clear()
                     prepareMessage()
                     messageBuilder.setContent(
-                            "Hrac **${target.name}** byl umlcen za **${reason.toString().capitalize()}** na **$muteMinutes minut**" +
+                            "Hrac **${target.name}** byl umlcen za **${reason.capitalize()}** na **$muteMinutes minut**" +
                                     "\nSpamoval ${spamNumber}x text *$message*"
                     )
                     client.send(messageBuilder.build())
@@ -129,7 +124,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
             }
 
             if (cordexProxy.databaseController.getReportCountInLastTenMinutes(target.id) > reportsNeeded) {
-                cordexProxy.banController.mutePlayer(targetPlayer, reason.toString(), 60 * muteMinutes)
+                cordexProxy.banController.mutePlayer(targetPlayer, reason, 60 * muteMinutes)
                 targetPlayer.lastMessages.clear()
                 prepareMessage()
                 messageBuilder.setContent(
