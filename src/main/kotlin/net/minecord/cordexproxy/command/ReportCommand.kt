@@ -100,7 +100,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
 
         if (targetPlayer != null && reason.toLowerCase().contains("spam", true) && !cordexProxy.banController.isMuted(targetPlayer.player.uniqueId)) {
             val spamNumber = 3
-            val muteMinutes = 20
+            var muteMinutes = 25
             val reportsNeeded = 3
 
             val prepareMessage = fun () {
@@ -110,7 +110,25 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
             }
 
             for (message in targetPlayer.lastMessages) {
-                if (Collections.frequency(targetPlayer.lastMessages, message) >= spamNumber) {
+                val frequency = Collections.frequency(targetPlayer.lastMessages, message)
+                if (frequency >= spamNumber) {
+                    when {
+                        frequency > 3 -> {
+                            muteMinutes = 60
+                        }
+                        frequency > 4 -> {
+                            muteMinutes = 120
+                        }
+                        frequency > 5 -> {
+                            muteMinutes = 240
+                        }
+                        frequency > 6 -> {
+                            muteMinutes = 480
+                        }
+                        frequency > 7 -> {
+                            muteMinutes = 960
+                        }
+                    }
                     cordexProxy.banController.mutePlayer(targetPlayer, reason.capitalize(), 60 * muteMinutes)
                     targetPlayer.lastMessages.clear()
                     prepareMessage()
