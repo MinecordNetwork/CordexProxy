@@ -113,20 +113,20 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
                 val frequency = Collections.frequency(targetPlayer.lastMessages, message)
                 if (frequency >= spamNumber) {
                     when {
-                        frequency > 3 -> {
-                            muteMinutes = 60
-                        }
-                        frequency > 4 -> {
-                            muteMinutes = 120
-                        }
-                        frequency > 5 -> {
-                            muteMinutes = 240
+                        frequency > 7 -> {
+                            muteMinutes = 960
                         }
                         frequency > 6 -> {
                             muteMinutes = 480
                         }
-                        frequency > 7 -> {
-                            muteMinutes = 960
+                        frequency > 5 -> {
+                            muteMinutes = 240
+                        }
+                        frequency > 4 -> {
+                            muteMinutes = 120
+                        }
+                        frequency > 3 -> {
+                            muteMinutes = 60
                         }
                     }
                     cordexProxy.banController.mutePlayer(targetPlayer, reason.capitalize(), 60 * muteMinutes)
