@@ -134,7 +134,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
                     prepareMessage()
                     messageBuilder.setContent(
                             "Hrac **${target.name}** byl umlcen za **${reason.capitalize()}** na **$muteMinutes minut**" +
-                                    "\nSpamoval ${spamNumber}x text *$message*"
+                                    "\nSpamoval ${frequency}x text *$message*"
                     )
                     client.send(messageBuilder.build())
                     return
