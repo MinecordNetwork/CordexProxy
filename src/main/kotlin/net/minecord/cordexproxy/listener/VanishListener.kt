@@ -5,6 +5,7 @@ import net.md_5.bungee.api.event.ChatEvent
 import net.md_5.bungee.api.event.ServerConnectedEvent
 import net.md_5.bungee.event.EventHandler
 import net.minecord.cordexproxy.CordexProxy
+import java.lang.NullPointerException
 
 class VanishListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler
@@ -22,10 +23,12 @@ class VanishListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
 
     @EventHandler
     fun onServerChange(e: ServerConnectedEvent) {
-        val cordPlayer = cordexProxy.playerController.getPlayer(e.player)
+        try {
+            val cordPlayer = cordexProxy.playerController.getPlayerByUniqueId(e.player.uniqueId)
 
-        if (cordPlayer.rank.isAdmin) {
-            cordPlayer.show()
-        }
+            if (cordPlayer.rank.isAdmin) {
+                cordPlayer.show()
+            }
+        } catch (e: NullPointerException) {}
     }
 }
