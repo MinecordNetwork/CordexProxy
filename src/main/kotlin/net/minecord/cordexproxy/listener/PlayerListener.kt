@@ -4,23 +4,26 @@ import net.minecord.cordexproxy.CordexProxy
 import net.md_5.bungee.api.event.ServerConnectEvent
 import net.md_5.bungee.api.event.ServerConnectedEvent
 import net.md_5.bungee.event.EventHandler
+import java.lang.NullPointerException
 
 import java.util.HashMap
 
 class PlayerListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler
     fun onServerConnect(e: ServerConnectedEvent) {
-        val cordPlayer = cordexProxy.playerController.getPlayer(e.player)
+        try {
+            val cordPlayer = cordexProxy.playerController.getPlayerByUniqueId(e.player.uniqueId)
 
-        cordexProxy.playerController.showTablist(cordPlayer)
+            cordexProxy.playerController.showTablist(cordPlayer)
 
-        if (cordPlayer.data.connectTime!!.time < System.currentTimeMillis() - 2000) {
-            val server = cordexProxy.serverController.getServer(e.server.info.name)
+            if (cordPlayer.data.connectTime!!.time < System.currentTimeMillis() - 2000) {
+                val server = cordexProxy.serverController.getServer(e.server.info.name)
 
-            val placeholders = HashMap<String, String>()
-            placeholders["%server%"] = server.displayName
-            cordPlayer.sendMessage("system", cordPlayer.translateMessage("connectedToServer"), placeholders)
-        }
+                val placeholders = HashMap<String, String>()
+                placeholders["%server%"] = server.displayName
+                cordPlayer.sendMessage("system", cordPlayer.translateMessage("connectedToServer"), placeholders)
+            }
+        } catch (e: NullPointerException) {}
     }
 
     @EventHandler
