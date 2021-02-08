@@ -1,5 +1,6 @@
 package net.minecord.cordexproxy.controller
 
+import net.md_5.bungee.api.ChatMessageType
 import net.minecord.cordexproxy.CordexProxy
 import net.minecord.cordexproxy.model.controller.chat.MotdType
 import net.minecord.cordexproxy.model.controller.log.LogType
@@ -28,11 +29,7 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         for (player in ProxyServer.getInstance().players) {
             addPlayer(player)
 
-            val title = BungeeTitle()
-
-            title.title(*TextComponent.fromLegacyText(""))
-            title.subTitle(*TextComponent.fromLegacyText(getPlayer(player).translateMessage("enablingProxy").colored()))
-            title.send(player)
+            player.sendMessage(ChatMessageType.ACTION_BAR, *TextComponent.fromLegacyText(getPlayer(player).translateMessage("enablingProxy").colored()))
         }
 
         keepTabListUpdated()
@@ -40,11 +37,7 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
 
     fun onDisable() {
         for (cordPlayer in getPlayers()) {
-            val title = BungeeTitle()
-
-            title.title(*TextComponent.fromLegacyText(""))
-            title.subTitle(*TextComponent.fromLegacyText(cordPlayer.translateMessage("disablingProxy").colored()))
-            title.send(cordPlayer.player)
+            cordPlayer.player.sendMessage(ChatMessageType.ACTION_BAR, *TextComponent.fromLegacyText(cordPlayer.translateMessage("disablingProxy").colored()))
         }
     }
 

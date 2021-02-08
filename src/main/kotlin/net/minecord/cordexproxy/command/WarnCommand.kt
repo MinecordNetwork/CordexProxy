@@ -47,7 +47,7 @@ class WarnCommand(cordexProxy: CordexProxy, name: String, permission: String, va
                         list.add(player.name)
                 }
                 args.size == 2 -> {
-                    val reasons = listOf("Report abusing", "Insulting", "Swearing", "Advertisement", "Spam", "Stupidity")
+                    val reasons = listOf("Caps", "Report abusing", "Insulting", "Swearing", "Advertisement", "Spam", "Stupidity")
                     for (reason in reasons) {
                         if (reason.startsWith(args[1], true))
                             list.add(reason)
