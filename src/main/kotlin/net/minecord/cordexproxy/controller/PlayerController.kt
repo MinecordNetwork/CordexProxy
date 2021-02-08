@@ -10,7 +10,6 @@ import net.md_5.bungee.api.ProxyServer
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.chat.TextComponent
 import net.md_5.bungee.api.connection.ProxiedPlayer
-import net.minecord.cordexproxy.model.controller.player.BungeeTitle
 import net.minecord.cordexproxy.util.colored
 import java.lang.NullPointerException
 
@@ -58,7 +57,7 @@ class PlayerController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         val playerName = cordPlayer.player.name
         val serverName = server.displayName
         val serverTps = ((server.tps * 1000.0).roundToInt() / 1000.0).toString()
-        val serverPlayers = getPlayers().filter { !it.hidden && it.player.server.info.name == proxyServer.info.name }.size
+        val serverPlayers = getPlayers().filter { !it.hidden && it.player.server !== null && it.player.server.info.name == proxyServer.info.name }.size
         val serverMaxPlayers = server.maxPlayers
         val ping = cordPlayer.player.ping
         val online = getPlayers().filter { !it.hidden }.size
