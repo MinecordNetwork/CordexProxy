@@ -5,7 +5,7 @@ import net.minecord.cordexproxy.CordexProxy
 import net.minecord.cordexproxy.model.controller.chat.MotdStorage
 import net.minecord.cordexproxy.model.controller.chat.MotdType
 import net.md_5.bungee.api.Favicon
-import net.md_5.bungee.api.chat.ComponentBuilder
+import net.md_5.bungee.api.chat.TextComponent
 import net.md_5.bungee.api.event.ProxyPingEvent
 import net.md_5.bungee.event.EventHandler
 import net.minecord.cordexproxy.util.centerMotdMessage
@@ -14,7 +14,6 @@ import net.minecord.cordexproxy.util.colored
 import javax.imageio.ImageIO
 import java.io.File
 import java.io.IOException
-import java.net.Inet4Address
 import kotlin.random.Random
 
 class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
@@ -93,10 +92,6 @@ class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             }
         }
 
-        if (Inet4Address.getLocalHost().hostAddress.startsWith("82.208")) {
-            event.response.players.online = cordexProxy.serverController.getPlayerCount()
-        }
-
-        event.response.descriptionComponent = ComponentBuilder(firstLine + "\n" + secondLine).create()[0]
+        event.response.descriptionComponent = TextComponent.fromLegacyText(firstLine + "\n" + secondLine)[0]
     }
 }

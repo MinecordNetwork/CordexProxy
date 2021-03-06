@@ -29,7 +29,7 @@ fun String.colored(colorChar: Char = '&'): String {
     return ChatColor.translateAlternateColorCodes(colorChar, rgbBuilder.toString())
 }
 
-private fun parseHexColor(hexColor: String): String? {
+private fun parseHexColor(hexColor: String): String {
     var color = hexColor
 
     if (!color.startsWith("#")) {
