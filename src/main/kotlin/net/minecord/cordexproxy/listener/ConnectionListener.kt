@@ -7,6 +7,7 @@ import net.md_5.bungee.api.event.PlayerDisconnectEvent
 import net.md_5.bungee.api.event.PostLoginEvent
 import net.md_5.bungee.event.EventHandler
 import net.md_5.bungee.event.EventPriority
+import net.minecord.cordexproxy.model.controller.translation.LanguageType
 import net.minecord.cordexproxy.util.colored
 import java.net.Inet4Address
 
@@ -34,6 +35,14 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
 
             if (Inet4Address.getLocalHost().hostAddress.startsWith("82.208")) {
                 e.connection.disconnect(*TextComponent.fromLegacyText("&b&lProsim pripoj se pres nasi novou IP adresu\n\n&fNase nova IP adresa: &emc.minecord.cz".colored()))
+            }
+
+            if (e.connection.version < 735) {
+                if (ipStorage.language == LanguageType.CS) {
+                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lMinimalni pozadovana verze hry je &e&l1.16\n\n&fStarsi verze minecraftu nepodporujeme".colored()))
+                } else {
+                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lYou need to use at least version &e&l1.16\n\n&fOlder versions are not supported on our server".colored()))
+                }
             }
 
             if (playerStorage != null) {
