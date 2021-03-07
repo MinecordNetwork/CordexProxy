@@ -10,11 +10,17 @@ import net.minecord.cordexproxy.util.colored
 class SecurityListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler
     fun onChat(e: ChatEvent) {
-        val command = e.message
-        if (command.startsWith("/l ") || command.startsWith("/login ") || command.startsWith("/reg ") || command.startsWith("/register "))
+        val sender = e.sender
+        if (sender !is ProxiedPlayer) {
             return
+        }
 
-        val cordPlayer = cordexProxy.playerController.getPlayer(e.sender as ProxiedPlayer)
+        val command = e.message
+        if (command.startsWith("/l ") || command.startsWith("/login ") || command.startsWith("/reg ") || command.startsWith("/register ")) {
+            return
+        }
+
+        val cordPlayer = cordexProxy.playerController.getPlayer(sender)
         if (!command.startsWith("/") || command.startsWith("/afk ")) {
             val isMuted = cordexProxy.banController.isMuted(cordPlayer.player.uniqueId)
             if (isMuted) {
