@@ -33,10 +33,6 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
             val playerStorage = cordexProxy.cacheController.getPlayerData(e.connection.uniqueId)
             var banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, null)
 
-            if (Inet4Address.getLocalHost().hostAddress.startsWith("82.208")) {
-                e.connection.disconnect(*TextComponent.fromLegacyText("&b&lProsim pripoj se pres nasi novou IP adresu\n\n&fNase nova IP adresa: &emc.minecord.cz".colored()))
-            }
-
             if (e.connection.version < 735) {
                 if (ipStorage.language == LanguageType.CS) {
                     e.connection.disconnect(*TextComponent.fromLegacyText("&b&lMinimalni pozadovana verze hry je &e&l1.16\n\n&fStarsi verze minecraftu nepodporujeme".colored()))
@@ -44,6 +40,13 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                     e.connection.disconnect(*TextComponent.fromLegacyText("&b&lYou need to use at least version &e&l1.16\n\n&fOlder versions are not supported on our server".colored()))
                 }
             }
+
+            /*val excludedNicks = cordexProxy.cacheController.getConfigValue("excluded_nicks").toString().split(",")
+            if (e.connection.name !in excludedNicks) {
+                if (e.connection.address.address.hostAddress.startsWith("85.160.") || e.connection.address.address.hostAddress.startsWith("89.24.")) {
+                    e.connection.disconnect(*TextComponent.fromLegacyText("&c&lRozsah vasich IP adres byl zablokovan\n\n&fBylo zacate trestni konani tykajici se kradeni uctu\n\n&fVas poskytovatel internetu vas bude v nejblizsich dnech kontaktovat.\n\n&ePokud tvuj nick neni &bhoznik &ekontaktuj na na nasem discordu &bhttps://ds.minecord.cz".colored()))
+                }
+            }*/
 
             if (playerStorage != null) {
                 /*if (ipStorage.country != "CZ" && ipStorage.country != "SK" && playerStorage.playedTime < 1000) {
