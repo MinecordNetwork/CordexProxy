@@ -167,7 +167,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
         if (args != null) {
             when (args.size) {
                 1 -> for (player in cordexProxy.playerController.getPlayers()) {
-                    if ((!player.hidden || bypass) && (player.player.name.startsWith(args[0], true) || player.player.name.contains(args[0], true)))
+                    if ((!player.hidden || bypass) && ((player.player.name.startsWith(args[0], true) || player.player.name.contains(args[0], true))))
                         list.add(player.player.name)
                 }
                 2 -> {
