@@ -65,11 +65,11 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         try {
             bannedPlayer = cordexProxy.playerController.getPlayerByUniqueId(target.uuid)
             placeholders["%tcolor%"] = bannedPlayer.rank.stringColor + ""
-            val bannedTitle = BungeeTitle()
+            /*val bannedTitle = BungeeTitle()
             bannedTitle.title(*TextComponent.fromLegacyText(bannedPlayer.translateMessage("bannedTitle").colored()))
             bannedTitle.subTitle(*TextComponent.fromLegacyText(bannedPlayer.translateMessage("bannedSubTitle").replace("%reason%", reason).colored()))
             bannedTitle.stay(60)
-            bannedTitle.send(bannedPlayer.player)
+            bannedTitle.send(bannedPlayer.player)*/
         } catch (e: NullPointerException) {
             placeholders["%tcolor%"] = "&#447eff"
         }
@@ -137,11 +137,11 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         cordexProxy.translationController.broadcastRandomTranslate("muteBroadcast", "banlist", placeholders)
         mutedPlayers[target.data.uuid] = MuteStorage(target.data.id, target.player.uniqueId, target.data.name, reason, Timestamp(System.currentTimeMillis()), expire)
 
-        val title = BungeeTitle()
+        /*val title = BungeeTitle()
         title.title(*TextComponent.fromLegacyText(target.translateMessage("mutedTitle").colored()))
         title.subTitle(*TextComponent.fromLegacyText(target.translateMessage("bannedSubTitle").replace("%reason%", reason).replace("%network%", networkName).colored()))
         title.stay(60)
-        title.send(target.player)
+        title.send(target.player)*/
     }
 
     fun unmutePlayer(uniqueId: UUID) {
@@ -161,11 +161,11 @@ class BanController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
     fun warnPlayer(target: CordPlayer, reason: String) {
         cordexProxy.translationController.broadcastRandomTranslate("warnBroadcast", "banlist", createPlaceholders(target, reason))
 
-        val title = BungeeTitle()
+        /*val title = BungeeTitle()
         title.title(*TextComponent.fromLegacyText(target.translateMessage("warnedTitle").colored()))
         title.subTitle(*TextComponent.fromLegacyText(target.translateMessage("bannedSubTitle").replace("%reason%", reason).replace("%network%", target.translateMessage("serverName")).colored()))
         title.stay(60)
-        title.send(target.player)
+        title.send(target.player)*/
     }
 
     private fun createPlaceholders(target: CordPlayer, reason: String): HashMap<String, String> {

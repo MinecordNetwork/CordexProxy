@@ -16,19 +16,20 @@ repositories {
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://mvnrepository.com/artifact/net.md-5/bungeecord-api' }
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url = 'https://dl.bintray.com/nuvotifier/maven/' }
     flatDir {
         dirs 'libs'
     }
 }
 
 dependencies {
-    compileOnly group: 'net.md-5', name: 'bungeecord-api', version: '1.16-R0.3'
+    compileOnly group: 'net.md-5', name: 'bungeecord-api', version: '1.17-R0.1-SNAPSHOT'
     compileOnly group: 'org.spigotmc', name: 'plugin-annotations', version: '1.2.2-SNAPSHOT'
-    compileOnly 'com.vexsoftware:nuvotifier-bungeecord:2.3.4'
     compileOnly 'eu.haelexuis:bungateway:1.0'
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     compile 'club.minnced:discord-webhooks:0.4.0'
+    compile 'net.kyori:adventure-api:4.8.1'
+    compile 'net.kyori:adventure-text-serializer-legacy:4.8.1'
+    implementation files('libs/nuvotifier-2.7.2.jar')
 }
 
 jar {
@@ -38,4 +39,8 @@ jar {
     }
 
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
 }

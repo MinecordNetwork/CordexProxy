@@ -1,23 +1,26 @@
 package net.minecord.cordexproxy.listener
 
-import net.md_5.bungee.api.ProxyServer
-import net.minecord.cordexproxy.CordexProxy
-import net.minecord.cordexproxy.model.controller.chat.MotdStorage
-import net.minecord.cordexproxy.model.controller.chat.MotdType
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import net.md_5.bungee.api.Favicon
+import net.md_5.bungee.api.ProxyServer
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.event.ProxyPingEvent
 import net.md_5.bungee.event.EventHandler
+import net.minecord.cordexproxy.CordexProxy
+import net.minecord.cordexproxy.model.controller.chat.MotdStorage
+import net.minecord.cordexproxy.model.controller.chat.MotdType
 import net.minecord.cordexproxy.util.centerMotdMessage
 import net.minecord.cordexproxy.util.colored
-
-import javax.imageio.ImageIO
 import java.io.File
 import java.io.IOException
 import java.net.Inet4Address
+import javax.imageio.ImageIO
 import kotlin.random.Random
 
 class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
+    private val legacyComponentSerializer = LegacyComponentSerializer.builder().character('&').hexCharacter('#').hexColors().build()
+
     @EventHandler
     fun onProxyPing(event: ProxyPingEvent) {
         val ipAddress = event.connection.address.address.hostAddress
@@ -47,8 +50,11 @@ class PingListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
 
                 val motdStorage = motds!![Random.nextInt(motds.size)]
 
-                firstLine = motdStorage.firstPayload.replace("%country%", ipData.country.toLowerCase()).replace("%language%", ipData.language.toString().toLowerCase()).replace("%network%", networkName).colored()
-                secondLine = motdStorage.secondPayload.replace("%country%", ipData.country.toLowerCase()).replace("%language%", ipData.language.toString().toLowerCase()).replace("%network%", networkName).colored()
+                firstLine = legacyComponentSerializer.serialize(Component.text(motdStorage.firstPayload.replace("%country%", ipData.country.toLowerCase()).replace("%language%", ipData.language.toString().toLowerCase()).replace("%network%", networkName))).colored()
+                secondLine = legacyComponentSerializer.serialize(Component.text(motdStorage.secondPayload.replace("%country%", ipData.country.toLowerCase()).replace("%language%", ipData.language.toString().toLowerCase()).replace("%network%", networkName))).colored()
+
+                /*val firstLineRgb = legacyComponentSerializer.serialize(Component.text(firstLine))
+                val secondLineRgb = legacyComponentSerializer.serialize(Component.text(secondLine))*/
 
                 for (serverInfo in ProxyServer.getInstance().servers.values) {
                     firstLine = firstLine.replace("{players " + serverInfo.name + "}", serverInfo.players.size.toString() + "")
