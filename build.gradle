@@ -24,12 +24,12 @@ repositories {
 dependencies {
     compileOnly group: 'net.md-5', name: 'bungeecord-api', version: '1.17-R0.1-SNAPSHOT'
     compileOnly group: 'org.spigotmc', name: 'plugin-annotations', version: '1.2.2-SNAPSHOT'
-    compileOnly 'eu.haelexuis:bungateway:1.0'
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     compile 'club.minnced:discord-webhooks:0.4.0'
     compile 'net.kyori:adventure-api:4.8.1'
     compile 'net.kyori:adventure-text-serializer-legacy:4.8.1'
     implementation files('libs/nuvotifier-2.7.2.jar')
+    implementation files('libs/BunGateway.jar')
 }
 
 jar {
