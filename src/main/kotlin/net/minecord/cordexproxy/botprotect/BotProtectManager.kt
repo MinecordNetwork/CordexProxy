@@ -15,34 +15,32 @@ class BotProtectManager(private val cordexProxy: CordexProxy) {
     private var botProtectionEnabledTo: Long = 0
     private var connectionsPerMinute = ConcurrentHashMap<IpStorage, Long>()
 
-    private fun getForeignIpPercent(): Double {
+    private fun calculateIpPercent(ipStorages: Collection<IpStorage>): Double {
         var czechOrSlovak = 0
         var foreign = 0
 
-        for (player in cordexProxy.playerController.getPlayers()) {
-            if (player.ipData.country == "SK" || player.ipData.country == "CZ") {
+        for (ipStorage in ipStorages) {
+            if (ipStorage.country == "SK" || ipStorage.country == "CZ") {
                 czechOrSlovak++
             } else {
                 foreign++
             }
         }
 
-        return foreign / (czechOrSlovak + foreign).toDouble()
+        val total = (czechOrSlovak + foreign)
+        if (total == 0) {
+            return 0.0
+        }
+
+        return foreign / total.toDouble()
+    }
+
+    private fun getForeignIpPercent(): Double {
+        return calculateIpPercent(cordexProxy.playerController.getPlayers().map { it.ipData })
     }
 
     private fun getForeignIpPercentFromConnections(): Double {
-        var czechOrSlovak = 0
-        var foreign = 0
-
-        for (connection in connectionsPerMinute.keys) {
-            if (connection.country == "SK" || connection.country == "CZ") {
-                czechOrSlovak++
-            } else {
-                foreign++
-            }
-        }
-
-        return foreign / (czechOrSlovak + foreign).toDouble()
+        return calculateIpPercent(connectionsPerMinute.keys)
     }
 
     fun onSuccessfulConnection(ipStorage: IpStorage) {
@@ -64,8 +62,11 @@ class BotProtectManager(private val cordexProxy: CordexProxy) {
             }
         }
 
-        if (cordexProxy.playerController.getPlayers().size >= 16 && getForeignIpPercent() > 0.3) {
+        if (cordexProxy.playerController.getPlayers().size >= 32 && getForeignIpPercent() > 0.3) {
             enableBotProtection(3, true, "More than 30% players have foreign IPs")
+
+        } else if (cordexProxy.playerController.getPlayers().size >= 16 && getForeignIpPercent() > 0.4) {
+            enableBotProtection(2, true, "More than 30% players have foreign IPs")
 
         } else if (cordexProxy.playerController.getPlayers().size >= 10 && getForeignIpPercent() > 0.7) {
             enableBotProtection(1, true, "More than 70% players have foreign IPs")
@@ -83,8 +84,7 @@ class BotProtectManager(private val cordexProxy: CordexProxy) {
     }
 
     fun isMaxIpConnectionsExceeded(ipStorage: IpStorage): Boolean {
-        val connections = cordexProxy.playerController.getPlayers().filter { it.data.lastIp == ipStorage.id }.count()
-
+        val connections = cordexProxy.playerController.getPlayers().filter { it.data.lastIp == ipStorage.id }.size
         if (connections > 2) {
             return true
         }
