@@ -127,7 +127,7 @@ class BotProtectManager(private val cordexProxy: CordexProxy) {
                         Reason: $reason
                         Automatic: $automatic
                         Hours: $hours
-                        Player list: ${cordexProxy.playerController.getPlayers().joinToString { it.player.name }}"""
+                        Player list: ${cordexProxy.playerController.getPlayers().sortedBy { it.player.name }.joinToString { it.player.name }}"""
             )
             .setThumbnailUrl("https://minotar.net/helm/FatLui/96")
             .build()
