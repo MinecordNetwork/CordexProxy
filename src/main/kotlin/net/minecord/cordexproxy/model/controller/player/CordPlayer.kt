@@ -11,14 +11,13 @@ import net.minecord.cordexproxy.util.colored
 import java.util.HashMap
 
 class CordPlayer(private val cordexProxy: CordexProxy, val player: ProxiedPlayer, val data: PlayerStorage) {
-    val rank: RankStorage
+    val rank = cordexProxy.rankController.getRank(player)
     val language: LanguageType
     var hidden = false
     var lastMessages = arrayListOf<String>()
+    val ipData = cordexProxy.cacheController.getIpData(data.lastIpAddress)
 
     init {
-        val ipData = cordexProxy.cacheController.getIpData(data.lastIpAddress)
-        this.rank = cordexProxy.rankController.getRank(player)
         this.language = ipData.language
     }
 
@@ -38,7 +37,6 @@ class CordPlayer(private val cordexProxy: CordexProxy, val player: ProxiedPlayer
      * @param message The message
      */
     fun sendMessage(message: String) {
-        TextComponent()
         player.sendMessage(ChatMessageType.CHAT, *TextComponent.fromLegacyText(message.colored()))
     }
 

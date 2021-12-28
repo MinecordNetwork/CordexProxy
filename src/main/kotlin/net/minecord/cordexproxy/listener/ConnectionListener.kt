@@ -29,29 +29,39 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     fun loginEvent(e: LoginEvent) {
         e.registerIntent(cordexProxy)
         cordexProxy.proxy.scheduler.runAsync(cordexProxy) {
+            var successfulConnection = true
             val ipStorage = cordexProxy.cacheController.getIpData(e.connection.address.address.hostAddress)
             val playerStorage = cordexProxy.cacheController.getPlayerData(e.connection.uniqueId)
             var banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, null)
 
-            if (e.connection.version < 735) {
+            if (e.connection.version < 755) {
                 if (ipStorage.language == LanguageType.CS) {
-                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lMinimalni pozadovana verze hry je &e&l1.16\n\n&fStarsi verze minecraftu nepodporujeme".colored()))
+                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lMinimalni pozadovana verze hry je &e&l1.17\n\n&fStarsi verze minecraftu nepodporujeme".colored()))
+                    successfulConnection = false
                 } else {
-                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lYou need to use at least version &e&l1.16\n\n&fOlder versions are not supported on our server".colored()))
+                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lYou need to use at least version &e&l1.17\n\n&fOlder versions are not supported on our server".colored()))
+                    successfulConnection = false
                 }
             }
 
             /*val excludedNicks = cordexProxy.cacheController.getConfigValue("excluded_nicks").toString().split(",")
             if (e.connection.name !in excludedNicks) {
                 if (e.connection.address.address.hostAddress.startsWith("85.160.") || e.connection.address.address.hostAddress.startsWith("89.24.")) {
-                    e.connection.disconnect(*TextComponent.fromLegacyText("&c&lRozsah vasich IP adres byl zablokovan\n\n&fBylo zacate trestni konani tykajici se kradeni uctu\n\n&fVas poskytovatel internetu vas bude v nejblizsich dnech kontaktovat.\n\n&ePokud tvuj nick neni &bhoznik &ekontaktuj na na nasem discordu &bhttps://ds.minecord.cz".colored()))
+                    e.connection.disconnect(*TextComponent.fromLegacyText("&c&lRozsah vasich IP adres byl zablokovan\n\n&fBylo zacate trestni konani tykajici se kradeni uctu\n\n&fVas poskytovatel internetu vas bude v nejblizsich dnech kontaktovat.\n\n&ePokud tvuj nick neni &bhoznik &ekontaktuj nas na nasem discordu &bhttps://ds.minecord.cz".colored()))
                 }
             }*/
 
             if (playerStorage != null) {
-                /*if (ipStorage.country != "CZ" && ipStorage.country != "SK" && playerStorage.playedTime < 1000) {
-                    e.connection.disconnect(*TextComponent.fromLegacyText("BYE"))
-                }*/
+                cordexProxy.botProtectManager.check()
+
+                if (cordexProxy.botProtectManager.isBlocked(playerStorage, ipStorage)) {
+                    e.connection.disconnect(*TextComponent.fromLegacyText("Sorry, try again later"))
+                    successfulConnection = false
+
+                } else if (cordexProxy.botProtectManager.isMaxIpConnectionsExceeded(ipStorage)) {
+                    e.connection.disconnect(*TextComponent.fromLegacyText(cordexProxy.translationController.getTranslation(ipStorage.language, "ipMaxConnectionsExceeded")))
+                    successfulConnection = false
+                }
 
                 banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, playerStorage.id)
 
@@ -59,9 +69,8 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                     val firstLine = cordexProxy.translationController.getTranslation(ipStorage.language, "maintenanceMotdFirstLine").colored()
                     val secondLine = cordexProxy.translationController.getTranslation(ipStorage.language, "maintenanceMotdSecondLine").colored()
                     e.connection.disconnect(*TextComponent.fromLegacyText((firstLine + "\n\n" + secondLine).colored()))
+                    successfulConnection = false
                 }
-            } else if (ipStorage.country != "CZ" && ipStorage.country != "SK") {
-                //e.connection.disconnect(*TextComponent.fromLegacyText("Easy bot attack protection"))
             }
 
             if (banStorage != null) {
@@ -81,6 +90,11 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                 }
 
                 e.connection.disconnect(*TextComponent.fromLegacyText(text))
+                successfulConnection = false
+            }
+
+            if (successfulConnection) {
+                cordexProxy.botProtectManager.onSuccessfulConnection(ipStorage)
             }
 
             e.completeIntent(cordexProxy)

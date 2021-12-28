@@ -9,6 +9,9 @@ import net.md_5.bungee.api.plugin.Plugin
 import net.md_5.bungee.config.Configuration
 import net.md_5.bungee.config.ConfigurationProvider
 import net.md_5.bungee.config.YamlConfiguration
+import net.minecord.cordexproxy.botprotect.BotProtectCommand
+import net.minecord.cordexproxy.botprotect.BotProtectManager
+import net.minecord.cordexproxy.discord.DiscordWebhookClientProvider
 
 import java.io.File
 import java.io.IOException
@@ -35,6 +38,10 @@ class CordexProxy : Plugin() {
         private set
     lateinit var banController: BanController
         private set
+
+    private val config: Configuration = ConfigurationProvider.getProvider(YamlConfiguration::class.java).load(File(dataFolder, "config.yml"))
+    val botProtectManager by lazy { BotProtectManager(this) }
+    val discordWebhookClientProvider by lazy { DiscordWebhookClientProvider(config.getString("webhook"), config.getString("webhookUrgent")) }
 
     override fun onEnable() {
         if (!dataFolder.exists())
@@ -97,7 +104,8 @@ class CordexProxy : Plugin() {
         proxy.pluginManager.registerCommand(this, FindCommand(this, "find", "default.global"))
         proxy.pluginManager.registerCommand(this, ProxyCommand(this, "proxy", "cordex.proxy"))
         proxy.pluginManager.registerCommand(this, WhoIsCommand(this, "whois", "cordex.whois"))
-        proxy.pluginManager.registerCommand(this, ReportCommand(this, "report", "default.global", cfg.getString("webhook")))
+        proxy.pluginManager.registerCommand(this, ReportCommand(this, "report", "default.global"))
+        proxy.pluginManager.registerCommand(this, BotProtectCommand(this, "botprot", "trainee.global"))
     }
 
     override fun onDisable() {

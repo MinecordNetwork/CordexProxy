@@ -68,6 +68,20 @@ class TranslationController(cordexProxy: CordexProxy) : BaseController(cordexPro
     }
 
     /**
+     * Sends individual translated message to all players and console
+     */
+    fun broadcastPrefixedTranslate(prefix: String, name: String) {
+        for (languageType in LanguageType.values()) {
+            val message = getTranslation(languageType, name)
+
+            cordexProxy.playerController.getPlayers().stream().filter { cordPlayer -> cordPlayer.language == languageType }.forEach { cordPlayer -> cordPlayer.sendMessage(prefix, message) }
+
+            if (languageType == LanguageType.EN)
+                cordexProxy.logController.write(message)
+        }
+    }
+
+    /**
      * Sends individual translated message to all players and console with placeholders
      *
      * @param name The name of the translation

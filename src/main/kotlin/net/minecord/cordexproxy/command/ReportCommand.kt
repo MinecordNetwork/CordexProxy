@@ -1,6 +1,5 @@
 package net.minecord.cordexproxy.command
 
-import club.minnced.discord.webhook.WebhookClientBuilder
 import club.minnced.discord.webhook.send.WebhookEmbed
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder
 import club.minnced.discord.webhook.send.WebhookMessageBuilder
@@ -15,7 +14,7 @@ import java.lang.NullPointerException
 import java.util.*
 
 
-class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, private val webHook: String) : BaseCommand(cordexProxy, name, permission) {
+class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String) : BaseCommand(cordexProxy, name, permission) {
     override fun execute(commandSender: CommandSender, args: Array<String>) {
         val cordPlayer = cordexProxy.playerController.getPlayer(commandSender as ProxiedPlayer)
 
@@ -43,17 +42,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String, 
 
         cordexProxy.databaseController.reportPlayer(target.id, cordPlayer.data.id, reason)
 
-        val builder = WebhookClientBuilder(webHook)
-
-        builder.setThreadFactory { job: Runnable? ->
-            val thread = Thread(job)
-            thread.name = "Hello"
-            thread.isDaemon = true
-            thread
-        }
-        builder.setWait(true)
-
-        val client = builder.build()
+        val client = cordexProxy.discordWebhookClientProvider.reportWebhookClient
 
         val messageBuilder = WebhookMessageBuilder()
 
