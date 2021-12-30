@@ -13,7 +13,7 @@ import java.net.Inet4Address
 
 class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler(priority = EventPriority.LOWEST)
-    fun loginEvent(e: PostLoginEvent) {
+    fun postLoginEvent(e: PostLoginEvent) {
         cordexProxy.playerController.addPlayer(e.player)
 
         if (cordexProxy.playerController.getPlayers().size > cordexProxy.cacheController.getPlayerRecord())
@@ -31,8 +31,18 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
         cordexProxy.proxy.scheduler.runAsync(cordexProxy) {
             var successfulConnection = true
             val ipStorage = cordexProxy.cacheController.getIpData(e.connection.address.address.hostAddress)
-            val playerStorage = cordexProxy.cacheController.getPlayerData(e.connection.uniqueId)
+            var playerStorage = cordexProxy.cacheController.getPlayerData(e.connection.uniqueId)
             var banStorage = cordexProxy.cacheController.getBanData(ipStorage.id, null)
+
+            if (playerStorage == null) {
+                for (i in 0..30) {
+                    Thread.sleep(100)
+                    playerStorage = cordexProxy.cacheController.getPlayerData(e.connection.uniqueId)
+                    if (playerStorage != null) {
+                        break
+                    }
+                }
+            }
 
             if (e.connection.version < 755) {
                 if (ipStorage.language == LanguageType.CS) {
@@ -43,13 +53,6 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                     successfulConnection = false
                 }
             }
-
-            /*val excludedNicks = cordexProxy.cacheController.getConfigValue("excluded_nicks").toString().split(",")
-            if (e.connection.name !in excludedNicks) {
-                if (e.connection.address.address.hostAddress.startsWith("85.160.") || e.connection.address.address.hostAddress.startsWith("89.24.")) {
-                    e.connection.disconnect(*TextComponent.fromLegacyText("&c&lRozsah vasich IP adres byl zablokovan\n\n&fBylo zacate trestni konani tykajici se kradeni uctu\n\n&fVas poskytovatel internetu vas bude v nejblizsich dnech kontaktovat.\n\n&ePokud tvuj nick neni &bhoznik &ekontaktuj nas na nasem discordu &bhttps://ds.minecord.cz".colored()))
-                }
-            }*/
 
             if (playerStorage != null) {
                 cordexProxy.botProtectManager.check()

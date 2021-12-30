@@ -102,9 +102,14 @@ class BotProtectManager(private val cordexProxy: CordexProxy) {
         }
 
         if (!isProtectionActive()) {
-            for (player in cordexProxy.playerController.getPlayers()) {
-                if (player.ipData.country != "CZ" && player.ipData.country != "SK" && player.data.playedTime < 1000) {
-                    player.player.disconnect(*TextComponent.fromLegacyText("Try again later"))
+            cordexProxy.proxy.scheduler.runAsync(cordexProxy) {
+                for (i in 0..3) {
+                    Thread.sleep(1000)
+                    for (player in cordexProxy.playerController.getPlayers()) {
+                        if (player.ipData.country != "CZ" && player.ipData.country != "SK" && player.data.playedTime < 1000) {
+                            player.player.disconnect(*TextComponent.fromLegacyText("Try again later"))
+                        }
+                    }
                 }
             }
 
