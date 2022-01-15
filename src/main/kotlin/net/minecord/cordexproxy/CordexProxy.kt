@@ -4,7 +4,6 @@ import net.minecord.cordexproxy.command.*
 import net.minecord.cordexproxy.controller.*
 import net.minecord.cordexproxy.listener.*
 import net.minecord.cordexproxy.model.controller.database.DatabaseCredentials
-import net.minecord.cordexproxy.model.controller.log.LogType
 import net.md_5.bungee.api.plugin.Plugin
 import net.md_5.bungee.config.Configuration
 import net.md_5.bungee.config.ConfigurationProvider
@@ -12,79 +11,30 @@ import net.md_5.bungee.config.YamlConfiguration
 import net.minecord.cordexproxy.botprotect.BotProtectCommand
 import net.minecord.cordexproxy.botprotect.BotProtectManager
 import net.minecord.cordexproxy.discord.DiscordWebhookClientProvider
-
 import java.io.File
-import java.io.IOException
-import java.nio.file.Files
 
 class CordexProxy : Plugin() {
-    lateinit var logController: LogController
-        private set
-    lateinit var chatController: ChatController
-        private set
-    lateinit var databaseController: DatabaseController
-        private set
-    lateinit var translationController: TranslationController
-        private set
-    lateinit var rankController: RankController
-        private set
-    lateinit var playerController: PlayerController
-        private set
-    lateinit var utilController: UtilController
-        private set
-    lateinit var cacheController: CacheController
-        private set
-    lateinit var serverController: ServerController
-        private set
-    lateinit var banController: BanController
-        private set
-
     private val config: Configuration = ConfigurationProvider.getProvider(YamlConfiguration::class.java).load(File(dataFolder, "config.yml"))
-    val botProtectManager by lazy { BotProtectManager(this) }
+
+    val databaseController = DatabaseController(this, DatabaseCredentials(config.getString("database.host"), config.getInt("database.port"), config.getString("database.name"), config.getString("database.user"), config.getString("database.pass")))
+    val chatController = ChatController(this)
+    val cacheController = CacheController(this)
+    val translationController = TranslationController(this)
+    val playerController = PlayerController(this)
+    val serverController = ServerController(this)
+    val rankController = RankController(this)
+    val banController = BanController(this)
+
     val discordWebhookClientProvider by lazy { DiscordWebhookClientProvider(config.getString("webhook"), config.getString("webhookUrgent")) }
+    val logController by lazy { LogController(this) }
+    val utilController by lazy { UtilController(this) }
+    val botProtectManager by lazy { BotProtectManager(this) }
 
     override fun onEnable() {
         if (!dataFolder.exists())
             dataFolder.mkdir()
 
-        val file = File(dataFolder, "config.yml")
-
-        if (!file.exists()) {
-            try {
-                getResourceAsStream("config.yml").use { `in` -> Files.copy(`in`, file.toPath()) }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-        }
-
-        var cfg: Configuration? = null
-        try {
-            cfg = ConfigurationProvider.getProvider(YamlConfiguration::class.java).load(File(dataFolder, "config.yml"))
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-        assert(cfg != null)
-
-        logController = LogController(this)
-        if (cfg!!.getString("database.name") == "minecraft" && cfg.getString("database.pass") == "password") {
-            logController.log("Database is not configured!", LogType.ERROR)
-            logController.log("Plugin disabled!", LogType.WARNING)
-            return
-        }
-
         proxy.registerChannel("ProxyPrivateChannel")
-
-        databaseController = DatabaseController(this, DatabaseCredentials(cfg.getString("database.host"), cfg.getInt("database.port"), cfg.getString("database.name"), cfg.getString("database.user"), cfg.getString("database.pass")))
-        cacheController = CacheController(this)
-        chatController = ChatController(this)
-        translationController = TranslationController(this)
-        serverController = ServerController(this)
-        rankController = RankController(this)
-        playerController = PlayerController(this)
-        utilController = UtilController(this)
-        banController = BanController(this)
 
         proxy.pluginManager.registerListener(this, PlayerListener(this))
         proxy.pluginManager.registerListener(this, GatewayListener(this))

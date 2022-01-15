@@ -84,7 +84,7 @@ class BotProtectManager(private val cordexProxy: CordexProxy) {
     }
 
     fun isMaxIpConnectionsExceeded(ipStorage: IpStorage): Boolean {
-        val connections = cordexProxy.playerController.getPlayers().filter { it.data.lastIp == ipStorage.id }.size
+        val connections = cordexProxy.playerController.getPlayers().filter { it.data.lastIp != 0 && it.data.lastIp == ipStorage.id }.size
         if (connections > 2) {
             return true
         }
