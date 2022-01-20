@@ -16,19 +16,19 @@ import java.io.File
 class CordexProxy : Plugin() {
     private val config: Configuration = ConfigurationProvider.getProvider(YamlConfiguration::class.java).load(File(dataFolder, "config.yml"))
 
-    val databaseController = DatabaseController(this, DatabaseCredentials(config.getString("database.host"), config.getInt("database.port"), config.getString("database.name"), config.getString("database.user"), config.getString("database.pass")))
-    val chatController = ChatController(this)
-    val cacheController = CacheController(this)
-    val translationController = TranslationController(this)
-    val playerController = PlayerController(this)
-    val serverController = ServerController(this)
-    val rankController = RankController(this)
-    val banController = BanController(this)
-
     val discordWebhookClientProvider by lazy { DiscordWebhookClientProvider(config.getString("webhook"), config.getString("webhookUrgent")) }
     val logController by lazy { LogController(this) }
     val utilController by lazy { UtilController(this) }
     val botProtectManager by lazy { BotProtectManager(this) }
+
+    val databaseController = DatabaseController(this, DatabaseCredentials(config.getString("database.host"), config.getInt("database.port"), config.getString("database.name"), config.getString("database.user"), config.getString("database.pass")))
+    val chatController = ChatController(this)
+    val cacheController = CacheController(this)
+    val translationController = TranslationController(this)
+    val serverController = ServerController(this)
+    val rankController = RankController(this)
+    val playerController = PlayerController(this)
+    val banController = BanController(this)
 
     override fun onEnable() {
         if (!dataFolder.exists())
