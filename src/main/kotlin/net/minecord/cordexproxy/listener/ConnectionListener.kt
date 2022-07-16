@@ -9,7 +9,6 @@ import net.md_5.bungee.event.EventHandler
 import net.md_5.bungee.event.EventPriority
 import net.minecord.cordexproxy.model.controller.translation.LanguageType
 import net.minecord.cordexproxy.util.colored
-import java.net.Inet4Address
 
 class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler(priority = EventPriority.LOWEST)
@@ -42,6 +41,11 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                         break
                     }
                 }
+            }
+
+            if (ipStorage.country == "TN") {
+                e.connection.disconnect(*TextComponent.fromLegacyText("Internal Exception: java.io.IOException: An existing connection was forcibly closed, java version mismatch"))
+                successfulConnection = false
             }
 
             if (e.connection.version < 755) {
