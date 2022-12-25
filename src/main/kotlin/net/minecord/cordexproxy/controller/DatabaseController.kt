@@ -244,7 +244,7 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
 
     fun loadIpData(ip: String): IpStorage {
         val placeholders = ArrayList(listOf(ip))
-        val ipStorage = IpStorage(0, "US", "USD", "en")
+        val ipStorage = IpStorage(0, "US", "USD", "cs")
         try {
             val rs = mysql.preparedQuery("SELECT * FROM `ip_address` WHERE `ip` = ?", placeholders)!!.resultSet
             if (rs.next()) {
@@ -252,25 +252,30 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
                 ipStorage.country = rs.getString("country")
                 ipStorage.currency = rs.getString("currency")
                 ipStorage.setLanguage(rs.getString("language"))
-            } else {
-                var jsonText: String? = null
-                try {
-                    jsonText = cordexProxy.utilController.webUtil.readWebsite("http://172.17.0.1/haelexuis/ipCache.php?ip=$ip", 6)
-                } catch (e: MalformedURLException) {
-                    e.printStackTrace()
-                }
-
-                if (jsonText != null) {
-                    val parser = JsonParser()
-                    val jsonInfo = parser.parse(jsonText).asJsonObject
-
-                    ipStorage.id = jsonInfo.get("id").asInt
-                    ipStorage.country = jsonInfo.get("country").asString
-                    ipStorage.currency = jsonInfo.get("currency").asString
-                    ipStorage.setLanguage(jsonInfo.get("language").asString.toLowerCase())
-                }
             }
             rs.close()
+
+            if (ipStorage.id != 0) {
+                return ipStorage
+            }
+
+            var jsonText: String? = null
+            try {
+                jsonText = cordexProxy.utilController.webUtil.readWebsite("http://172.17.0.1/haelexuis/ipCache.php?ip=$ip", 6)
+            } catch (e: MalformedURLException) {
+                e.printStackTrace()
+            }
+
+            if (jsonText != null) {
+                val parser = JsonParser()
+                val jsonInfo = parser.parse(jsonText).asJsonObject
+
+                ipStorage.id = jsonInfo.get("id").asInt
+                ipStorage.country = jsonInfo.get("country").asString
+                ipStorage.currency = jsonInfo.get("currency").asString
+                ipStorage.setLanguage(jsonInfo.get("language").asString.toLowerCase())
+            }
+
         } catch (ex: SQLException) {
             ex.printStackTrace()
         }
