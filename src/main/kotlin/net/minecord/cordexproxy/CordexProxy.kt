@@ -56,6 +56,8 @@ class CordexProxy : Plugin() {
         proxy.pluginManager.registerCommand(this, WhoIsCommand(this, "whois", "cordex.whois"))
         proxy.pluginManager.registerCommand(this, ReportCommand(this, "report", "default.global"))
         proxy.pluginManager.registerCommand(this, BotProtectCommand(this, "botprot", "trainee.global"))
+
+        databaseController.failSafe()
     }
 
     override fun onDisable() {
