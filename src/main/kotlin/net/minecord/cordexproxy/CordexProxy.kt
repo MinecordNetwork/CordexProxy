@@ -1,5 +1,6 @@
 package net.minecord.cordexproxy
 
+import net.kyori.adventure.platform.bungeecord.BungeeAudiences
 import net.minecord.cordexproxy.command.*
 import net.minecord.cordexproxy.controller.*
 import net.minecord.cordexproxy.listener.*
@@ -20,6 +21,7 @@ class CordexProxy : Plugin() {
     val logController by lazy { LogController(this) }
     val utilController by lazy { UtilController(this) }
     val botProtectManager by lazy { BotProtectManager(this) }
+    val bungeeAudiences by lazy { BungeeAudiences.create(this) }
 
     val databaseController = DatabaseController(this, DatabaseCredentials(config.getString("database.host"), config.getInt("database.port"), config.getString("database.name"), config.getString("database.user"), config.getString("database.pass")))
     val chatController = ChatController(this)

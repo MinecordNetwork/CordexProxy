@@ -48,12 +48,12 @@ class ConnectionListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
                 successfulConnection = false
             }
 
-            if (e.connection.version < 755) {
+            if (e.connection.version < 763) {
                 if (ipStorage.language == LanguageType.CS) {
-                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lMinimalni pozadovana verze hry je &e&l1.17\n\n&fStarsi verze minecraftu nepodporujeme".colored()))
+                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lMinimalni pozadovana verze hry je &e&l1.20\n\n&fStarsi verze minecraftu nepodporujeme".colored()))
                     successfulConnection = false
                 } else {
-                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lYou need to use at least version &e&l1.17\n\n&fOlder versions are not supported on our server".colored()))
+                    e.connection.disconnect(*TextComponent.fromLegacyText("&b&lYou need to use at least version &e&l1.20\n\n&fOlder versions are not supported on our server".colored()))
                     successfulConnection = false
                 }
             }

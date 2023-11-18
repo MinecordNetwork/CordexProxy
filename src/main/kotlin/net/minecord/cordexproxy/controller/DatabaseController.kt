@@ -157,7 +157,7 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
         try {
             val rs = mysql.query("SELECT * FROM `minecraft_server`")!!.resultSet
             while (rs.next())
-                servers.add(ServerStorage(rs.getInt("id"), rs.getString("name"), rs.getString("display_name"), rs.getString("game_type"), rs.getString("address"),
+                servers.add(ServerStorage(rs.getInt("id"), rs.getString("name"), rs.getString("display_name"), rs.getString("game_type"),
                         rs.getInt("players"), rs.getInt("max_players"), rs.getInt("ram_max"), rs.getInt("ram_usage"), rs.getFloat("tps"), rs.getTimestamp("last_start"), rs.getTimestamp("last_stop")))
             rs.close()
         } catch (e: SQLException) {
