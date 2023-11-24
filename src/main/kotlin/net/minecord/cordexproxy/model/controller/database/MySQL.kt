@@ -10,7 +10,7 @@ class MySQL(hostname: String, port: Int, database: String, username: String, pas
     private var aliveConnection: Connection? = null
     private val driver: String = "com.mysql.jdbc.Driver"
     private val connectionString: String = ("jdbc:mysql://" + hostname + ":" + port + "/" + database + "?user=" + username + "&autoReconnect=true&useSSL=false"
-            + "&password=" + password + "&useUnicode=true&characterEncoding=UTF-8")
+            + "&password=" + password + "&useUnicode=true&characterEncoding=UTF-8&connectionTimeZone=Europe/Prague")
 
     private val connection: Connection?
         get() = if (aliveConnection != null) aliveConnection else createConnection()

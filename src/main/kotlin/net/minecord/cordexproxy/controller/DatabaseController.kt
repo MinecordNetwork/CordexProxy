@@ -260,22 +260,22 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
                 return ipStorage
             }
 
-            var jsonText: String? = null
-            try {
-                jsonText = cordexProxy.utilController.webUtil.readWebsite("http://172.17.0.1/haelexuis/ipCache.php?ip=$ip", 6)
-            } catch (e: MalformedURLException) {
-                e.printStackTrace()
-            }
+            val rs2 = mysql.preparedQuery("SELECT ip_locations.*, ip4_blocks.is_anonymous_proxy FROM ip4_blocks JOIN ip_locations ON ip4_blocks.geoname_id = ip_locations.geoname_id WHERE INET_ATON(?) BETWEEN ip4_blocks.ip_from AND ip4_blocks.ip_to LIMIT 1", placeholders)!!.resultSet
+            if (rs2.next()) {
+                val countryIso = rs2.getString("country_iso_code")
+                val language = if (countryIso === "SK") "sk" else if (countryIso === "CZ") "cs" else "en"
+                ipStorage.country = countryIso
+                ipStorage.currency = if (countryIso === "SK") "EUR" else if (countryIso === "CZ") "CZK" else "EUR"
+                ipStorage.setLanguage(language)
 
-            if (jsonText != null) {
-                val parser = JsonParser()
-                val jsonInfo = parser.parse(jsonText).asJsonObject
-
-                ipStorage.id = jsonInfo.get("id").asInt
-                ipStorage.country = jsonInfo.get("country").asString
-                ipStorage.currency = jsonInfo.get("currency").asString
-                ipStorage.setLanguage(jsonInfo.get("language").asString.toLowerCase())
+                val placeholders2 = arrayListOf(ip, ipStorage.country, ipStorage.currency, language)
+                ipStorage.id = mysql.getInsertedRow("INSERT INTO `ip_address` (`ip`, `country`, `currency`, `language`) VALUES (?, ?, ?, ?)", placeholders2)
+            } else {
+                ipStorage.country = "UNKNOWN"
+                ipStorage.currency = "EUR"
+                ipStorage.setLanguage("cs")
             }
+            rs2.close()
 
         } catch (ex: SQLException) {
             ex.printStackTrace()
