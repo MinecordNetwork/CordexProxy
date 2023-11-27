@@ -1,6 +1,6 @@
 package net.minecord.cordexproxy.model.controller.chat
 
-enum class DefaultFontInfo private constructor(val character: Char, val length: Int) {
+enum class DefaultFontInfo(val character: Char, val length: Int) {
     A('A', 5),
     a('a', 5),
     B('B', 5),
@@ -99,15 +99,15 @@ enum class DefaultFontInfo private constructor(val character: Char, val length: 
     DEFAULT('a', 4);
 
     val boldLength: Int
-        get() = if (this == DefaultFontInfo.SPACE) this.length else this.length + 1
+        get() = if (this == SPACE) this.length else this.length + 1
 
     companion object {
 
         fun getDefaultFontInfo(c: Char): DefaultFontInfo {
-            for (dFI in DefaultFontInfo.values()) {
+            for (dFI in entries) {
                 if (dFI.character == c) return dFI
             }
-            return DefaultFontInfo.DEFAULT
+            return DEFAULT
         }
     }
 }
