@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.8.21"
+    id("org.jetbrains.kotlin.jvm") version "1.9.21"
 }
 
 repositories {
@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     annotationProcessor("com.velocitypowered", "velocity-api", "3.2.0-SNAPSHOT")
-    implementation("org.jetbrains.kotlin", "kotlin-stdlib", "1.8.21")
+    implementation("org.jetbrains.kotlin", "kotlin-stdlib", "1.9.21")
     implementation("club.minnced", "discord-webhooks", "0.4.0")
     implementation("net.kyori", "adventure-api", "4.8.1")
     implementation("net.kyori", "adventure-platform-bungeecord", "4.3.1")
