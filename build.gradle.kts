@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.21"
+    kotlin("jvm") version "1.9.21"
 }
 
 repositories {
