@@ -3,4 +3,3 @@ plugins {
 }
 
 rootProject.name = "CordexProxy"
-include("api-client")
