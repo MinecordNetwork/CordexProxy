@@ -263,9 +263,9 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
             val rs2 = mysql.preparedQuery("SELECT ip_locations.*, ip4_blocks.is_anonymous_proxy FROM ip4_blocks JOIN ip_locations ON ip4_blocks.geoname_id = ip_locations.geoname_id WHERE INET_ATON(?) BETWEEN ip4_blocks.ip_from AND ip4_blocks.ip_to LIMIT 1", placeholders)!!.resultSet
             if (rs2.next()) {
                 val countryIso = rs2.getString("country_iso_code")
-                val language = if (countryIso === "SK") "sk" else if (countryIso === "CZ") "cs" else "en"
+                val language = if (countryIso == "SK") "sk" else if (countryIso == "CZ") "cs" else "en"
                 ipStorage.country = countryIso
-                ipStorage.currency = if (countryIso === "SK") "EUR" else if (countryIso === "CZ") "CZK" else "EUR"
+                ipStorage.currency = if (countryIso == "SK") "EUR" else if (countryIso == "CZ") "CZK" else "EUR"
                 ipStorage.setLanguage(language)
 
                 val placeholders2 = arrayListOf(ip, ipStorage.country, ipStorage.currency, language)
