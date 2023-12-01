@@ -482,13 +482,17 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
     }
 
     fun insertVote(playerId: Int, serverListId: Int) {
-        val placeholders = listOf(playerId.toString(), serverListId.toString(), SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()))
+        val utcDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        utcDate.timeZone = TimeZone.getTimeZone("UTC")
+        val placeholders = listOf(playerId.toString(), serverListId.toString(), utcDate.format(Date()))
 
         mysql.preparedQuery("INSERT INTO `minecraft_vote` (`player_id`, `serverlist_id`, `created_at`) VALUES (?, ?, ?)", placeholders)
     }
 
     fun insertDelivery(playerId: Int, itemId: Int, amount: Int, serverType: String) {
-        val placeholders = listOf(playerId.toString(), itemId.toString(), amount.toString(), serverType, SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()))
+        val utcDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        utcDate.timeZone = TimeZone.getTimeZone("UTC")
+        val placeholders = listOf(playerId.toString(), itemId.toString(), amount.toString(), serverType, utcDate.format(Date()))
 
         mysql.preparedQuery("INSERT INTO `minecraft_player_delivery` (`player_id`, `item_id`, `amount`, `server_type`, `created_at`) VALUES (?, ?, ?, ?, ?)", placeholders)
     }
