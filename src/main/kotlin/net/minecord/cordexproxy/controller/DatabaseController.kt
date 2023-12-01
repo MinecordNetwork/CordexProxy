@@ -1,6 +1,5 @@
 package net.minecord.cordexproxy.controller
 
-import com.google.gson.JsonParser
 import net.minecord.cordexproxy.CordexProxy
 import net.minecord.cordexproxy.model.controller.ban.BanStorage
 import net.minecord.cordexproxy.model.controller.config.ConfigValue
@@ -15,9 +14,8 @@ import net.minecord.cordexproxy.model.controller.player.PlayerStorage
 import net.minecord.cordexproxy.model.controller.server.ServerStorage
 import net.minecord.cordexproxy.model.controller.translation.LanguageType
 import net.minecord.cordexproxy.model.controller.translation.TranslationStorage
-
-import java.net.MalformedURLException
 import java.sql.SQLException
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -409,6 +407,22 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
         return output
     }
 
+    fun getServerlistId(name: String): Int {
+        val placeholders = listOf(name)
+        var output = 0
+
+        try {
+            val rs = mysql.preparedQuery("SELECT `id` FROM `minecraft_serverlist` WHERE `votifier_name` = ?", placeholders)!!.resultSet
+            while (rs.next())
+                output = rs.getInt("id")
+            rs.close()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+
+        return output
+    }
+
     fun setInfo(value: Int, key: String) {
         val placeholders = listOf(value.toString(), key)
 
@@ -467,10 +481,16 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
         mysql.preparedQuery("INSERT INTO `minecraft_ban` (`admin_id`, `admin_ip`, `target_id`, `target_ip`, `reason`, `is_ipban`, `expire_at`) VALUES (?, ?, ?, ?, ?, ?, ?)", placeholders)
     }
 
-    fun insertVote(playerId: Int, serverList: String) {
-        val placeholders = listOf(playerId.toString(), serverList)
+    fun insertVote(playerId: Int, serverListId: Int) {
+        val placeholders = listOf(playerId.toString(), serverListId.toString(), SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()))
 
-        mysql.preparedQuery("INSERT INTO `minecraft_vote` (`player_id`, `serverlist`) VALUES (?, ?)", placeholders)
+        mysql.preparedQuery("INSERT INTO `minecraft_vote` (`player_id`, `serverlist_id`, `created_at`) VALUES (?, ?, ?)", placeholders)
+    }
+
+    fun insertDelivery(playerId: Int, itemId: Int, amount: Int, serverType: String) {
+        val placeholders = listOf(playerId.toString(), itemId.toString(), amount.toString(), serverType, SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()))
+
+        mysql.preparedQuery("INSERT INTO `minecraft_player_delivery` (`player_id`, `item_id`, `amount`, `server_type`, `created_at`) VALUES (?, ?, ?, ?, ?)", placeholders)
     }
 
     fun updatePlayerData(playerStorage: PlayerStorage) {

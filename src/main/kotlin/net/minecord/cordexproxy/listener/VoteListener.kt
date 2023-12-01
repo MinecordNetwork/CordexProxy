@@ -5,19 +5,17 @@ import net.md_5.bungee.api.ProxyServer
 import net.minecord.cordexproxy.CordexProxy
 import net.md_5.bungee.event.EventHandler
 
-import java.util.HashMap
-
 class VoteListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
     @EventHandler
     fun onVote(e: VotifierEvent) {
         val vote = e.vote
         val player = ProxyServer.getInstance().getPlayer(vote.username)
-        val placeholders = HashMap<String, String>()
+        //val placeholders = HashMap<String, String>()
 
         var service = vote.serviceName
 
         if (service.contains("Minecraft-MP")) {
-            service = "MinecraftMP"
+            service = "Minecraft-MP"
         }
 
         if (service.contains("PlanetMinecraft")) {
@@ -25,25 +23,40 @@ class VoteListener(cordexProxy: CordexProxy) : BaseListener(cordexProxy) {
         }
 
         if (service.contains("MinecraftServery")) {
-            service = "McServery"
+            service = "MinecraftServery.eu"
         }
 
-        placeholders["%prefix%"] = cordexProxy.chatController.getPrefix("vote")
-        placeholders["%service%"] = service
-        if (player != null) {
+        val serverListId = cordexProxy.databaseController.getServerlistId(service)
+
+        //placeholders["%prefix%"] = cordexProxy.chatController.getPrefix("vote")
+        //placeholders["%service%"] = service
+
+        val playerId = if (player != null) {
             val cordPlayer = cordexProxy.playerController.getPlayer(player)
-            placeholders["%player%"] = cordPlayer.player.name + ""
-            placeholders["%rcolor%"] = cordPlayer.rank.stringColor + ""
-            cordexProxy.databaseController.insertVote(cordPlayer.data.id, service)
+            cordPlayer.data.id
         } else {
-            placeholders["%player%"] = vote.username
-            placeholders["%rcolor%"] = "&#447eff"
+            val data = cordexProxy.databaseController.loadPlayerData(vote.username)
+            data?.id ?: return
+        }
+
+        /*if (player != null) {
+            val cordPlayer = cordexProxy.playerController.getPlayer(player)
+            //placeholders["%player%"] = cordPlayer.player.name + ""
+            //placeholders["%rcolor%"] = cordPlayer.rank.stringColor + ""
+            cordexProxy.databaseController.insertVote(cordPlayer.data.id, serverListId)
+        } else {
+            //placeholders["%player%"] = vote.username
+            //placeholders["%rcolor%"] = "&#447eff"
             val data = cordexProxy.databaseController.loadPlayerData(vote.username)
             if (data != null) {
-                cordexProxy.databaseController.insertVote(data.id, service)
+                cordexProxy.databaseController.insertVote(data.id, serverListId)
             }
-        }
+        }*/
 
-        cordexProxy.translationController.broadcastTranslate("playerVoted", placeholders)
+        cordexProxy.databaseController.insertVote(playerId, serverListId)
+        cordexProxy.databaseController.insertDelivery(playerId, 16, 1, "survival")
+        cordexProxy.databaseController.insertDelivery(playerId, 399, 1, "survival")
+
+        //cordexProxy.translationController.broadcastTranslate("playerVoted", placeholders)
     }
 }
