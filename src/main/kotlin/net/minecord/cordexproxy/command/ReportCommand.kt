@@ -70,7 +70,7 @@ class ReportCommand(cordexProxy: CordexProxy, name: String, permission: String) 
                         "\nFirst login: **" + target.firstLogin + "**" +
                         "\nOriginal minecraft: **" + (if (target.type == "online") "yes" else "no") + "**" +
                         "\nBanned: **" + cordexProxy.databaseController.getBanCount(target.id) + "x** | Reported: **" + cordexProxy.databaseController.getReportCount(target.id) + "x**" +
-                        "\n**-----------------------------------------------------------------------------**" + lastMessages +
+                        lastMessages +
                         "\n\nReport reason: **" + reason + "**" +
                         "\nReported on server: **" + ChatColor.stripColor(cordexProxy.serverController.getServer(cordPlayer.player.server.info.name).displayName.colored()) + "**"
                 )
