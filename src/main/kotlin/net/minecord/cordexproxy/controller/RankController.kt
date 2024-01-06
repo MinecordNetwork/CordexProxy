@@ -21,36 +21,36 @@ class RankController(cordexProxy: CordexProxy) : BaseController(cordexProxy) {
         ranks[7] = RankStorage("VIP", "premium.global", "&a", ChatColor.GREEN, 0x54FB54)
         ranks[8] = RankStorage("Member", "default.global", "&#447eff", ChatColor.BLUE, 0x437DFB)
 
+
         cordexProxy.logController.log("RankController &b| &7Loaded &a${ranks.size} &7ranks", LogType.INFO)
     }
 
-    /**
-     * Gets the current rank of player according to basic permission
-     *
-     * @param player The bukkit player
-     * @return The rank
-     */
     fun getRank(player: ProxiedPlayer): RankStorage {
         for (value in ranks.values) {
             if (player.hasPermission(value.basicPermission))
                 return value
         }
-        return RankStorage("Member", "default.global", "&9&l", ChatColor.BLUE, 0x437DFB)
+
+        return ranks[ranks.size - 1]!!
     }
 
-    /**
-     * Gets the current rank by name
-     *
-     * @param name The rank name
-     * @return The added player
-     */
     fun getRank(name: String): RankStorage {
+        var target = name
+
+        if (target == "premium") {
+            target = "vip"
+        }
+
+        if (target.equals("default", ignoreCase = true)) {
+            target = "Member"
+        }
+
         for (value in ranks.values) {
-            if (value.name.toLowerCase() == name.toLowerCase())
+            if (value.name.equals(target, ignoreCase = true))
                 return value
         }
 
-        return ranks[8]!!
+        return ranks[ranks.size - 1]!!
     }
 
     /**
