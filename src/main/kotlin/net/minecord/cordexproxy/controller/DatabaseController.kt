@@ -204,9 +204,9 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
     internal fun loadPlayerData(name: String): PlayerStorage? {
         val placeholders = listOf(name, name, name)
         val result = mysql.preparedQuery("SELECT mc_player.*, ip_add_first.ip first_ip_address, ip_add_last.ip last_ip_address, lucky_perms.primary_group FROM " +
-                "((SELECT * FROM `minecraft_player` first_search WHERE `name` = ? AND `type` = 'online' LIMIT 1) UNION " +
-                "(SELECT * FROM `minecraft_player` second_search WHERE `name` = ? AND `type` = 'warez' LIMIT 1) UNION " +
-                "(SELECT * FROM `minecraft_player` third_search WHERE `name` = ? AND `type` = 'offline' LIMIT 1)) mc_player " +
+                "((SELECT * FROM `minecraft_player` first_search WHERE `name` = ? AND `type` = 'online' ORDER BY last_login DESC LIMIT 1) UNION " +
+                "(SELECT * FROM `minecraft_player` second_search WHERE `name` = ? AND `type` = 'warez' ORDER BY last_login DESC LIMIT 1) UNION " +
+                "(SELECT * FROM `minecraft_player` third_search WHERE `name` = ? AND `type` = 'offline' ORDER BY last_login DESC LIMIT 1)) mc_player " +
                 "INNER JOIN `ip_address` ip_add_first " +
                 "ON ip_add_first.id = mc_player.first_ip_address_id " +
                 "INNER JOIN `ip_address` ip_add_last " +
