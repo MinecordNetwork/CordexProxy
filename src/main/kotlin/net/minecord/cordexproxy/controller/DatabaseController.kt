@@ -269,10 +269,11 @@ class DatabaseController(cordexProxy: CordexProxy, credentials: DatabaseCredenti
                 val placeholders2 = arrayListOf(ip, ipStorage.country, ipStorage.currency, language)
                 ipStorage.id = mysql.getInsertedRow("INSERT INTO `ip_address` (`ip`, `country`, `currency`, `language`) VALUES (?, ?, ?, ?)", placeholders2)
             } else {
-                ipStorage.id = 0
                 ipStorage.country = "UNKNOWN"
                 ipStorage.currency = "EUR"
                 ipStorage.setLanguage("cs")
+                val placeholders2 = arrayListOf(ip, ipStorage.country, ipStorage.currency, ipStorage.language.toString().lowercase())
+                ipStorage.id = mysql.getInsertedRow("INSERT INTO `ip_address` (`ip`, `country`, `currency`, `language`) VALUES (?, ?, ?, ?)", placeholders2)
             }
             rs2.close()
 
